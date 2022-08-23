@@ -1,10 +1,21 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 import HomeScreen from './HomeScreen'
+import {auth} from '../firebase'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const handleSignUp = () => {
+      auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch(error => alert(error.message))
+    }
 
   return (
     <View style={styles.container}>
@@ -30,7 +41,7 @@ const LoginScreen = () => {
         <Text style={{color: "white"}}>Sign in</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{alignSelf: "center", marginTop:32}}>
+      <TouchableOpacity style={{alignSelf: "center", marginTop:32}} onPress={handleSignUp}>
         <Text style={{color: "#2d2d2d"}}>
             New to SocialApp? <Text style={{color: "#5ac1ae", fontWeight: "500"}}>Sign up.</Text>
         </Text>
