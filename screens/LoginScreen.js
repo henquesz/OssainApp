@@ -15,7 +15,9 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
 
   const handleSignUp = () => {
-    auth.createUserWithEmailAndPassword(email, password).then((userCredentials) => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
         const user = userCredentials.user;
         console.log(user.email);
       })
