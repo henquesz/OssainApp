@@ -5,13 +5,16 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image, StatusBar, LayoutAnimation
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import HomeScreen from "./HomeScreen";
+import RegisterScreen from "./RegisterScreen";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -26,6 +29,7 @@ const LoginScreen = () => {
     return unsubscribe
   }, [])
 
+  
   const handleSignUp = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
@@ -44,11 +48,10 @@ const LoginScreen = () => {
       console.log('Logged with', user.email);
     }).catch(error => alert(error.message))
   }
-
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.greeting}>{`Hello again.\nWelcome back.`}</Text>
+        <Image source={require('../assets/ossain.png')} style={styles.img}></Image>
 
         <View style={styles.errorMessage}>{/* <Text>error</Text> */}</View>
 
@@ -102,10 +105,11 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop:30,
   },
   greeting: {
-    marginTop: 100,
-    fontSize: 18,
+    marginTop: 10,
+    fontSize: 13,
     fontWeight: "400",
     textAlign: "center",
   },
@@ -118,6 +122,7 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 48,
     marginHorizontal: 30,
+    marginTop: -13,
   },
   inputTitle: {
     color: "#5ac1ae",
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomColor: "#5ac1ae",
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 1,
     height: 40,
     fontSize: 15,
     color: "#5ac1ae",
@@ -139,4 +144,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  img: {
+    width: 350,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 100,
+  }
 });

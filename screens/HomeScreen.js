@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, LayoutAnimation } from 'react-native'
 import React from 'react'
 import {auth} from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
-  
+  LayoutAnimation.easeInEaseOut();
   const navigation = useNavigation()
 
   const handleSignOut = () => {
