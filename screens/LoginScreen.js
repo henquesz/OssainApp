@@ -30,14 +30,7 @@ const LoginScreen = () => {
   }, [])
 
   
-  const handleSignUp = () => {
-    // auth
-    //   .createUserWithEmailAndPassword(email, password)
-    //   .then((userCredentials) => {
-    //     const user = userCredentials.user;
-    //     console.log('Registered in', user.email);
-    //   })
-    //   .catch((error) => alert(error.message));
+  const pageRedirect = () => {
         navigation.replace("RegisterScreen")
   }
   
@@ -87,7 +80,7 @@ const LoginScreen = () => {
 
         <TouchableOpacity
           style={{ alignSelf: "center", marginTop: 32 }}
-          onPress={handleSignUp}
+          onPress={pageRedirect}
         >
           <Text style={{ color: "#2d2d2d" }}>
             New to SocialApp?{" "}

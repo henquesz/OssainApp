@@ -16,6 +16,7 @@ import {
   
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
   
     const navigation = useNavigation()
   
@@ -46,6 +47,10 @@ import {
         const user = userCredentials.user;
         console.log('Logged with', user.email);
       }).catch(error => alert(error.message))
+    }
+
+    const pageRedirect = () => {
+      navigation.replace("LoginScreen")
     }
     return (
       <KeyboardAvoidingView style={styles.container}>
@@ -86,19 +91,19 @@ import {
                 secureTextEntry
                 autoCapitalize="none"
                 placeholder="Your name"
-                value={password}
-                onChangeText={(text) => setPassword(text)}
+                value={name}
+                onChangeText={(text) => setName(text)}
               ></TextInput>
             </View>
           </View>
   
-          <TouchableOpacity style={styles.button} onPress={handleSign}>
+          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
             <Text style={{ color: "white" }}>Register</Text>
           </TouchableOpacity>
   
           <TouchableOpacity
             style={{ alignSelf: "center", marginTop: 32 }}
-            onPress={handleSignUp}
+            onPress={pageRedirect}
           >
             <Text style={{ color: "#2d2d2d" }}>
               Already have a account?{" "}
