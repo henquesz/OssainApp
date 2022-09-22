@@ -31,13 +31,14 @@ const LoginScreen = () => {
 
   
   const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log('Registered in', user.email);
-      })
-      .catch((error) => alert(error.message));
+    // auth
+    //   .createUserWithEmailAndPassword(email, password)
+    //   .then((userCredentials) => {
+    //     const user = userCredentials.user;
+    //     console.log('Registered in', user.email);
+    //   })
+    //   .catch((error) => alert(error.message));
+        navigation.replace("RegisterScreen")
   }
   
   const handleSign = () => {

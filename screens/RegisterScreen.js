@@ -51,7 +51,7 @@ import {
       <KeyboardAvoidingView style={styles.container}>
         <View style={styles.container}>
           
-          <Text style={styles.greeting}>{`Hello againaaaaaaaaaaaaaa.\nWelcome back.`}</Text>
+          <Text style={styles.greeting}>{`New to Social app?\nRegister now.`}</Text>
   
           <View style={styles.errorMessage}>{/* <Text>error</Text> */}</View>
   
@@ -78,10 +78,22 @@ import {
                 onChangeText={(text) => setPassword(text)}
               ></TextInput>
             </View>
+
+            <View style={{ paddingTop: 25 }}>
+              <Text style={styles.inputTitle}>Your Name</Text>
+              <TextInput
+                style={styles.input}
+                secureTextEntry
+                autoCapitalize="none"
+                placeholder="Your name"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              ></TextInput>
+            </View>
           </View>
   
           <TouchableOpacity style={styles.button} onPress={handleSign}>
-            <Text style={{ color: "white" }}>Sign in</Text>
+            <Text style={{ color: "white" }}>Register</Text>
           </TouchableOpacity>
   
           <TouchableOpacity
@@ -89,9 +101,9 @@ import {
             onPress={handleSignUp}
           >
             <Text style={{ color: "#2d2d2d" }}>
-              New to SocialApp?{" "}
+              Already have a account?{" "}
               <Text style={{ color: "#5ac1ae", fontWeight: "500" }}>
-                Sign up.
+                Sign.
               </Text>
             </Text>
           </TouchableOpacity>
