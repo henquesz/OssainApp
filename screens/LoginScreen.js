@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 48,
     marginHorizontal: 30,
-    marginTop: -13,
+    marginTop: -30,
   },
   inputTitle: {
     color: "#5ac1ae",
@@ -139,10 +139,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   img: {
-    width: 350,
+    width: 300,
     height: 100,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 100,
+    marginTop: 70,
+    marginLeft:25,
   }
 });
