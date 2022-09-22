@@ -74,9 +74,16 @@ const LoginScreen = () => {
           </View>
         </View>
 
+        <View style={styles.formButtons}>
         <TouchableOpacity style={styles.button} onPress={handleSign}>
           <Text style={{ color: "white" }}>Sign in</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.buttongoogle} onPress={handleSign}>
+        <Image source={require('../assets/logoGoogle.webp')} style={styles.imgGoogle}></Image>
+        </TouchableOpacity>
+
+        </View>
+        
 
         <TouchableOpacity
           style={{ alignSelf: "center", marginTop: 32 }}
@@ -135,8 +142,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#5ac1ae",
     borderRadius: 4,
     height: 52,
+    width:250,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttongoogle: {
+    marginHorizontal:290,
+    marginTop:-52,
+    borderRadius: 4,
+    height: 52,
+    width:70,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor:"#5ac1ae",
   },
   img: {
     width: 300,
@@ -145,5 +164,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 70,
     marginLeft:25,
+  },
+  imgGoogle: {
+    width: 30,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 0,
+    marginLeft:0,
   }
 });

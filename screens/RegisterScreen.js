@@ -94,7 +94,6 @@ const RegisterScreen = () => {
             <Text style={styles.inputTitle}>Your Name</Text>
             <TextInput
               style={styles.input}
-              secureTextEntry
               autoCapitalize="none"
               placeholder="Your name"
               value={name}
