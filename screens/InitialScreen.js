@@ -1,18 +1,25 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+//Imports / dependencias para o projeto
+import { StyleSheet, Text, View, TouchableOpacity, Image, LayoutAnimation } from "react-native";
 import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
+//Modulo de exportação principal de renderização e funcionamento da tela inicial.
 const InitialScreen = () => {
+
+  //Animação de entrada
+  LayoutAnimation.easeInEaseOut();
+
   const navigation = useNavigation();
 
   const log = useEffect(() => {
     navigation.navigate("InitialScreen");
   }, []);
 
+  //Redirecionamento / rota do botão login
   const pageRedirect = () => {
     navigation.replace("LoginScreen")
 }
-
+  //Componentes visuais / front da aplicação
   return (
     <View style={styles.container}>
       <Image
@@ -39,8 +46,10 @@ const InitialScreen = () => {
   );
 };
 
+//exportação da tela inicial
 export default InitialScreen;
 
+//css para estilização da tela
 const styles = StyleSheet.create({
   container: {
     flex: 1,

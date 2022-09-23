@@ -1,3 +1,4 @@
+//Imports / dependencias para o projeto
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -13,27 +14,44 @@ import RegisterScreen from "./RegisterScreen";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
+//Modulo de exportação principal de renderização e funcionamento da tela de login.
 const LoginScreen = () => {
+  //Animação de entrada
+  LayoutAnimation.easeInEaseOut();
 
+  //variaveis para login - firebase
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const navigation = useNavigation()
 
+  //Acesso a tela principal - home caso o login for aceito
   useEffect(() => {
   const unsubscribe = auth.onAuthStateChanged(user => {
       if(user){
-        navigation.replace("Home")
+        navigation.replace("HomeScreen")
       }
     })
     return unsubscribe
   }, [])
 
-  
+  //Redirecionamento / rota do botão register
   const pageRedirect = () => {
         navigation.replace("RegisterScreen")
   }
+
+  //Redirecionamento / rota da logo para a tela inicial
+  const initialRedirect = () => {
+    navigation.replace("InitialScreen")
+  }
+
+
+  //Redirecionamento / rota de teste
+  const testeHome = () => {
+    navigation.replace("HomeScreen")
+  }
   
+  //Lógica para função do login - firebase
   const handleSign = () => {
     auth
     .signInWithEmailAndPassword(email, password)
@@ -42,12 +60,16 @@ const LoginScreen = () => {
       console.log('Logged with', user.email);
     }).catch(error => alert(error.message))
   }
+
+   //Componentes visuais / front da aplicação
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.container}>
 
-
+        <TouchableOpacity onPress={initialRedirect}>
         <Image source={require('../assets/ossain.png')} style={styles.img}></Image>
+        </TouchableOpacity>
+        
         
         <View style={styles.backForm}>
         <View style={styles.errorMessage}>{/* <Text>error</Text> */}</View>
@@ -84,7 +106,7 @@ const LoginScreen = () => {
         <TouchableOpacity style={styles.button} onPress={handleSign}>
           <Text style={{ color: "white" }}>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttongoogle} onPress={handleSign}>
+        <TouchableOpacity style={styles.buttongoogle} onPress={testeHome}>
         <Image source={require('../assets/logoGoogle.webp')} style={styles.imgGoogle}></Image>
         </TouchableOpacity>
 
@@ -109,8 +131,10 @@ const LoginScreen = () => {
   );
 };
 
+//exportação da tela de login
 export default LoginScreen;
 
+//css para estilização da tela
 const styles = StyleSheet.create({
   container: {
     flex: 1,

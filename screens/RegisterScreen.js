@@ -1,3 +1,4 @@
+//Imports / dependencias para o projeto
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -14,13 +15,19 @@ import HomeScreen from "./HomeScreen";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
+//Modulo de exportação principal de renderização e funcionamento da tela de registro.
 const RegisterScreen = () => {
+  //Animação de entrada
+  LayoutAnimation.easeInEaseOut();
+
+  //variaveis para registro - firebase
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
   const navigation = useNavigation();
 
+   //Acesso a tela principal - home caso o registro for aceito
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -30,6 +37,7 @@ const RegisterScreen = () => {
     return unsubscribe;
   }, []);
 
+  //Lógica para função do registro de usuario - firebase
   const handleSignUp = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
@@ -40,6 +48,7 @@ const RegisterScreen = () => {
       .catch((error) => alert(error.message));
   };
 
+  //Lógica para função do registro de usuario // dependencia lado login - firebase
   const handleSign = () => {
     auth
       .signInWithEmailAndPassword(email, password)
@@ -50,17 +59,24 @@ const RegisterScreen = () => {
       .catch((error) => alert(error.message));
   };
 
+   //Redirecionamento / rota de login
   const pageRedirect = () => {
     navigation.replace("LoginScreen");
   };
+
+   //Redirecionamento / rota inicial
+  const initialRedirect = () => {
+    navigation.replace("InitialScreen")
+  }
+
+  //Componentes visuais / front da aplicação
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.container}>
 
-        <Image
-          source={require("../assets/ossain.png")}
-          style={styles.img}
-        ></Image>
+        <TouchableOpacity onPress={initialRedirect}>
+        <Image source={require('../assets/ossain.png')} style={styles.img}></Image>
+        </TouchableOpacity>
 
         <View style={styles.errorMessage}>{/* <Text>error</Text> */}</View>
 
@@ -126,8 +142,10 @@ const RegisterScreen = () => {
   );
 };
 
+//exportação da tela de registro
 export default RegisterScreen;
 
+//css para estilização da tela
 const styles = StyleSheet.create({
   container: {
     flex: 1,

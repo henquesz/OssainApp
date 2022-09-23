@@ -1,3 +1,4 @@
+//Imports / dependencias para o projeto
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -10,14 +11,14 @@ import RegisterScreen from './screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
-
+//function principal para funcionamento das telas e redirecionamentos
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{headerShown: false}} name="InitialScreen" component={InitialScreen} />
         <Stack.Screen options={{headerShown: false}} name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
+        <Stack.Screen options={{headerShown: false}} name="HomeScreen" component={HomeScreen} />
         <Stack.Screen options={{headerShown: false}} name="RegisterScreen" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
