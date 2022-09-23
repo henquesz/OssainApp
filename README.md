@@ -42,6 +42,11 @@ Estamos passando por instabilidades em relação ao firebase dentro do nosso pro
 ![App Screenshot](https://i.pinimg.com/564x/fb/9c/e1/fb9ce1d9f4002cd1fdf5ac32469cab7b.jpg)
 
 
+## Features
+
+- Login with Google
+
+
 ## Contribuindo
 
 Contribuições são sempre bem-vindas!
