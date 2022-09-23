@@ -56,9 +56,7 @@ const RegisterScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.container}>
-        <Text
-          style={styles.greeting}
-        >{`New to Social app?\nRegister now.`}</Text>
+
         <Image
           source={require("../assets/ossain.png")}
           style={styles.img}
@@ -66,13 +64,17 @@ const RegisterScreen = () => {
 
         <View style={styles.errorMessage}>{/* <Text>error</Text> */}</View>
 
+        <View style={styles.backForm}>
+
         <View style={styles.form}>
+        <Text style={styles.legenda}>Register</Text>
           <View>
             <Text style={styles.inputTitle}>Email Adress</Text>
             <TextInput
               style={styles.input}
               autoCapitalize="none"
               placeholder="Email"
+              placeholderTextColor="#595959"
               value={email}
               onChangeText={(text) => setEmail(text)}
             ></TextInput>
@@ -85,6 +87,7 @@ const RegisterScreen = () => {
               secureTextEntry
               autoCapitalize="none"
               placeholder="Password"
+              placeholderTextColor="#595959"
               value={password}
               onChangeText={(text) => setPassword(text)}
             ></TextInput>
@@ -95,7 +98,8 @@ const RegisterScreen = () => {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              placeholder="Your name"
+              placeholder="Your Name"
+              placeholderTextColor="#595959"
               value={name}
               onChangeText={(text) => setName(text)}
             ></TextInput>
@@ -110,11 +114,13 @@ const RegisterScreen = () => {
           style={{ alignSelf: "center", marginTop: 32 }}
           onPress={pageRedirect}
         >
-          <Text style={{ color: "#2d2d2d" }}>
+          <Text style={{ color: "#fff" }}>
             Already have a account?{" "}
             <Text style={{ color: "#5ac1ae", fontWeight: "500" }}>Sign.</Text>
           </Text>
         </TouchableOpacity>
+          
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -125,6 +131,13 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop:25,
+  },
+  legenda:{
+    color:"#5ac1ae",
+    fontSize:25,
+    marginBottom: 10,
+    marginTop:45,
   },
   greeting: {
     marginTop: 90,
@@ -143,8 +156,13 @@ const styles = StyleSheet.create({
     marginBottom: 48,
     marginHorizontal: 30,
   },
+  backForm:{
+    backgroundColor:"#2d2d2d",
+    height:670,
+    borderRadius:20,
+  },
   inputTitle: {
-    color: "#5ac1ae",
+    color: "#fff",
     fontSize: 10,
     textTransform: "uppercase",
   },
@@ -164,11 +182,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   img: {
-    width: 150,
+    width: 250,
     height: 100,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 1,
-    marginLeft:110,
+    marginTop: -10,
+    marginLeft:55,
   },
 });

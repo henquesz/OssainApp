@@ -5,7 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Image, StatusBar, LayoutAnimation
+  Image, StatusBar, LayoutAnimation, ImageBackground
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import HomeScreen from "./HomeScreen";
@@ -45,17 +45,22 @@ const LoginScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.container}>
+
+
         <Image source={require('../assets/ossain.png')} style={styles.img}></Image>
-
+        
+        <View style={styles.backForm}>
         <View style={styles.errorMessage}>{/* <Text>error</Text> */}</View>
-
+        
         <View style={styles.form}>
+        <Text style={styles.legenda}>Sign in</Text>
           <View>
             <Text style={styles.inputTitle}>Email Adress</Text>
             <TextInput
               style={styles.input}
               autoCapitalize="none"
               placeholder="Email"
+              placeholderTextColor="#595959" 
               value={email}
               onChangeText={(text) => setEmail(text)}
             ></TextInput>
@@ -68,6 +73,7 @@ const LoginScreen = () => {
               secureTextEntry
               autoCapitalize="none"
               placeholder="Password"
+              placeholderTextColor="#595959"
               value={password}
               onChangeText={(text) => setPassword(text)}
             ></TextInput>
@@ -89,13 +95,15 @@ const LoginScreen = () => {
           style={{ alignSelf: "center", marginTop: 32 }}
           onPress={pageRedirect}
         >
-          <Text style={{ color: "#2d2d2d" }}>
-            New to SocialApp?{" "}
+          <Text style={{ color: "#fff" }}>
+            Don't have an account?{" "}
             <Text style={{ color: "#5ac1ae", fontWeight: "500" }}>
               Sign up.
             </Text>
           </Text>
         </TouchableOpacity>
+        </View>
+        
       </View>
     </KeyboardAvoidingView>
   );
@@ -106,7 +114,12 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop:30,
+    marginTop:20,
+  },
+  legenda:{
+    color:"#5ac1ae",
+    fontSize:25,
+    marginBottom: 10,
   },
   greeting: {
     marginTop: 10,
@@ -120,13 +133,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 30,
   },
+  backForm:{
+    backgroundColor:"#2d2d2d",
+    height:670,
+    borderRadius:20,
+  },
   form: {
     marginBottom: 48,
     marginHorizontal: 30,
     marginTop: -30,
   },
   inputTitle: {
-    color: "#5ac1ae",
+    color: "#fff",
     fontSize: 10,
     textTransform: "uppercase",
   },
@@ -135,7 +153,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     height: 40,
     fontSize: 15,
-    color: "#5ac1ae",
+    color: "#fff",
   },
   button: {
     marginHorizontal: 30,
@@ -158,12 +176,12 @@ const styles = StyleSheet.create({
     borderColor:"#5ac1ae",
   },
   img: {
-    width: 300,
+    width: 250,
     height: 100,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 70,
-    marginLeft:25,
+    marginTop: -10,
+    marginLeft:55,
   },
   imgGoogle: {
     width: 30,
