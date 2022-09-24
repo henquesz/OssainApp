@@ -29,7 +29,7 @@ const LoginScreen = () => {
   useEffect(() => {
   const unsubscribe = auth.onAuthStateChanged(user => {
       if(user){
-        navigation.replace("HomeScreen")
+        navigation.replace("Home")
       }
     })
     return unsubscribe
@@ -48,7 +48,7 @@ const LoginScreen = () => {
 
   //Redirecionamento / rota de teste
   const testeHome = () => {
-    navigation.replace("HomeScreen")
+    navigation.replace("Home")
   }
   
   //Lógica para função do login - firebase

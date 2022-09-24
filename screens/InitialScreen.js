@@ -16,8 +16,12 @@ const InitialScreen = () => {
   }, []);
 
   //Redirecionamento / rota do botão login
-  const pageRedirect = () => {
+  const pageRedirectSign = () => {
     navigation.replace("LoginScreen")
+}
+  //Redirecionamento / rota do botão login
+  const pageRedirectSignUp = () => {
+    navigation.replace("RegisterScreen")
 }
   //Componentes visuais / front da aplicação
   return (
@@ -26,13 +30,13 @@ const InitialScreen = () => {
         source={require("../assets/ossain.png")}
         style={styles.img}
       ></Image>
-      <TouchableOpacity style={styles.button} onPress={pageRedirect}>
+      <TouchableOpacity style={styles.button} onPress={pageRedirectSign}>
         <Text style={{ color: "white" }}>Sign in</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
           style={{ alignSelf: "center", marginTop: 20 }}
-          onPress={pageRedirect}
+          onPress={pageRedirectSignUp}
         >
           <Text style={{ color: "#2d2d2d" }}>
             Don't have a account?{" "}
