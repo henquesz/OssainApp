@@ -15,7 +15,7 @@ const HomeScreen = () => {
     auth
     .signOut()
     .then(() => {
-      navigation.replace("LoginScreen")
+      navigation.replace("InitialScreen")
     }).catch(error => alert(error.message))
   }
   //Componentes visuais / front da aplicação
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor:"white",
   },
   button: {
     backgroundColor: "#5ac1ae",
