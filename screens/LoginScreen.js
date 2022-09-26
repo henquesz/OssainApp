@@ -9,9 +9,7 @@ import {
   Image, StatusBar, LayoutAnimation, ImageBackground
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import HomeScreen from "./HomeScreen";
-import RegisterScreen from "./RegisterScreen";
-import { auth } from "../firebase";
+import { auth } from '../firebase';
 import { useNavigation } from "@react-navigation/native";
 
 //Modulo de exportação principal de renderização e funcionamento da tela de login.

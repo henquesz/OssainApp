@@ -24,7 +24,7 @@ const Tab = createBottomTabNavigator();
 function Home() {
   return (
       <Tab.Navigator>
-         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="bookmark" size={30} color="black"/>}}} />
+         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarHideOnKeyboard:true, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="bookmark" size={30} color="black"/>}}} />
           <Tab.Screen name="ApiScreen" component={ApiScreen}  options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="feather" size={25} color="black"/>}}} />
           <Tab.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="user" size={30} color="black"/>}}} />
       </Tab.Navigator>
@@ -36,7 +36,7 @@ const Stack = createNativeStackNavigator();
 //function principal para funcionamento das telas e redirecionamentos
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <Stack.Navigator>
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="InitialScreen" component={InitialScreen} />
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="LoginScreen" component={LoginScreen} />
@@ -54,4 +54,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tab: {
+    position: 'absolute',
+    bottom: 25,
+    left: 20,
+    right:20,
+    elevation: 0,
+    backgroundColor: "white",
+    borderRadius:15,
+    height:50,
+  }
 });
