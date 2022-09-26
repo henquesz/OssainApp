@@ -45,6 +45,7 @@ Estamos passando por instabilidades em relação ao firebase dentro do nosso pro
 ## Features
 
 - Login with Google
+- Post Methods
 
 
 ## Contribuindo
