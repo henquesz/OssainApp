@@ -8,45 +8,69 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  ImagePickerIOS,
 } from "react-native";
 import React from "react";
 import { auth } from "../firebase";
-import { useNavigation } from "@react-navigation/native";
+import navigation from "@react-navigation/native";
 
 import {Feather} from '@expo/vector-icons';
 
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 
+import * as ImagePicker from 'expo-image-picker';
+
+import Fire from "../fire";
+
+const firebase = require("firebase");
+require("firebase/firestore");
+
 //Modulo de exportação principal de renderização e funcionamento da tela home.
-export default function HomeScreen(){
 
-  // state = {
-  //   text: "",
-  //   image: null
-  // };
+export default class HomeScreen extends React.Component{
 
-  // componentDidMount = async () => {
-  //   this.getPhotoPermission();
-  // };
+  state = {
+    text: "",
+    image: null
+  };
 
-  // getPhotoPermission = async () => {
-  //   if(Constants.platform.ios){
-  //     const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+  componentDidMount = async () => {
+    this.getPhotoPermission();
+  }
 
-  //     if(status != "granted"){
-  //       alert("We need permission to access your camera roll");
-  //     }
-  //   }
-  // }
+  getPhotoPermission = async () => {
+    if(Constants.platform){
+      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
 
-  //Animação de entrada
-  LayoutAnimation.easeInEaseOut();
-  const navigation = useNavigation();
+      if(status != "granted"){
+        alert("We need permission to access your camera roll");
+      }
+    }
+  };
+
+  handlePost = () => {
+    Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image}).then(ref => {
+      this.setState({text: "", image: null});
+      // this.props.navigation.goBack();
+      navigation.goBack();
+    }).catch(error => {
+      alert(error);
+    });
+  };
+
+  pickImage = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3]
+    })
+    if(!result.cancelled){
+      this.setState({image: result.uri});
+    }
+  };
 
   //Lógica para função de deslogar - firebase
-  const handleSignOut = () => {
+  handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
@@ -54,31 +78,33 @@ export default function HomeScreen(){
       })
       .catch((error) => alert(error.message));
   };
-  //Componentes visuais / front da aplicação
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.head}>
-      <Image source={require("../assets/vicky.jpg")} style={styles.img}></Image>
-        <Text style={styles.text}>Welcome, {auth.currentUser?.email}</Text>
-        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-          <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Image source={require("../assets/vicky.jpg")} style={styles.avatar}></Image>
-        <TextInput autoFocus={true} multiline={true} numberOfLines={4} style={{flex: 1}} placeholder="O que você está pensando atualmente?"></TextInput>
-        <TouchableOpacity style={styles.photo}>
-          <Feather name="camera" size={20} color="#2d2d2d"/>
-        </TouchableOpacity>
-      </View>
-
-    </SafeAreaView>
-  ); 
+  render(){
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.head}>
+        <Image source={require("../assets/vicky.jpg")} style={styles.img}></Image>
+          <Text style={styles.text}>Welcome, {auth.currentUser?.email}</Text>
+          <TouchableOpacity style={styles.button} onPress={this.handleSignOut}>
+            <Text style={styles.buttonText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+  
+        <View style={styles.inputContainer}>
+          <Image source={require("../assets/vicky.jpg")} style={styles.avatar}></Image>
+          <TextInput autoFocus={true} multiline={true} numberOfLines={4} style={{flex: 1}} placeholder="O que você está pensando atualmente?" onChangeText={text => this.setState({text})} value={this.state.text}></TextInput>
+          <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
+            <Feather name="camera" size={20} color="#2d2d2d"/>
+          </TouchableOpacity>
+  
+          <View style={{marginHorizontal:32, marginTop:32, height:150}}>
+            <Image source={{uri: this.state.image}} style={{width:"100%", height:"100%",}}></Image>
+          </View>
+        </View>
+  
+      </SafeAreaView>
+    );
+  }
 };
-
-//exportação da tela home
-// export default HomeScreen;
 
 //css para estilização da tela
 const styles = StyleSheet.create({
