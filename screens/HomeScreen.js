@@ -8,103 +8,56 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  ImagePickerIOS,
 } from "react-native";
 import React from "react";
 import { auth } from "../firebase";
-import navigation from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 import {Feather} from '@expo/vector-icons';
 
-import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
-
-import * as ImagePicker from 'expo-image-picker';
-
-import Fire from "../fire";
-
-const firebase = require("firebase");
-require("firebase/firestore");
-
 //Modulo de exportação principal de renderização e funcionamento da tela home.
 
-export default class HomeScreen extends React.Component{
+const HomeScreen = () =>{
 
-  state = {
-    text: "",
-    image: null
-  };
-
-  componentDidMount = async () => {
-    this.getPhotoPermission();
-  }
-
-  getPhotoPermission = async () => {
-    if(Constants.platform){
-      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
-
-      if(status != "granted"){
-        alert("We need permission to access your camera roll");
-      }
-    }
-  };
-
-  handlePost = () => {
-    Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image}).then(ref => {
-      this.setState({text: "", image: null});
-      // this.props.navigation.goBack();
-      navigation.goBack();
-    }).catch(error => {
-      alert(error);
-    });
-  };
-
-  pickImage = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3]
-    })
-    if(!result.cancelled){
-      this.setState({image: result.uri});
-    }
-  };
+  const navigation = useNavigation();
 
   //Lógica para função de deslogar - firebase
-  handleSignOut = () => {
+ const handleSignOut = () => {
     auth
       .signOut()
       .then(() => {
+        // navigation.replace("InitialScreen");
         navigation.replace("InitialScreen");
       })
       .catch((error) => alert(error.message));
   };
-  render(){
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.head}>
         <Image source={require("../assets/vicky.jpg")} style={styles.img}></Image>
           <Text style={styles.text}>Welcome, {auth.currentUser?.email}</Text>
-          <TouchableOpacity style={styles.button} onPress={this.handleSignOut}>
+          <TouchableOpacity style={styles.button} onPress={handleSignOut}>
             <Text style={styles.buttonText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
   
         <View style={styles.inputContainer}>
           <Image source={require("../assets/vicky.jpg")} style={styles.avatar}></Image>
-          <TextInput autoFocus={true} multiline={true} numberOfLines={4} style={{flex: 1}} placeholder="O que você está pensando atualmente?" onChangeText={text => this.setState({text})} value={this.state.text}></TextInput>
-          <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
+          <TextInput autoFocus={true} multiline={true} numberOfLines={4} style={{flex: 1}} placeholder="O que você está pensando atualmente?"></TextInput>
+          <TouchableOpacity style={styles.photo}>
             <Feather name="camera" size={20} color="#2d2d2d"/>
           </TouchableOpacity>
   
           <View style={{marginHorizontal:32, marginTop:32, height:150}}>
-            <Image source={{uri: this.state.image}} style={{width:"100%", height:"100%",}}></Image>
+            <Image style={{width:"100%", height:"100%",}}></Image>
           </View>
         </View>
   
       </SafeAreaView>
     );
-  }
 };
+export default HomeScreen;
 
 //css para estilização da tela
 const styles = StyleSheet.create({

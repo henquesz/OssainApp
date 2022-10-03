@@ -11,6 +11,7 @@ import {
   LayoutAnimation,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import firebase from 'firebase/compat/app';
 import HomeScreen from "./HomeScreen";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
@@ -40,9 +41,13 @@ const RegisterScreen = () => {
   //Lógica para função do registro de usuario - firebase
   const handleSignUp = () => {
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password, name)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
+          name,
+          email
+        })
         console.log("Registered in", user.email);
       })
       .catch((error) => alert(error.message));
