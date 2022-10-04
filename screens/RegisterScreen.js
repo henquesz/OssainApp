@@ -32,7 +32,7 @@ const RegisterScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomeScreen");
+        navigation.replace("Home");
       }
     });
     return unsubscribe;
@@ -47,7 +47,6 @@ const RegisterScreen = () => {
         firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
           name,
           email,
-          name
         })
         console.log("Registered in", name);
       })
