@@ -46,9 +46,10 @@ const RegisterScreen = () => {
         const user = userCredentials.user;
         firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
           name,
-          email
+          email,
+          name
         })
-        console.log("Registered in", user.email);
+        console.log("Registered in", name);
       })
       .catch((error) => alert(error.message));
   };
