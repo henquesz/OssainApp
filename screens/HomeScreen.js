@@ -8,13 +8,21 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  ImagePickerIOS,
 } from "react-native";
 import React from "react";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
 import {Feather} from '@expo/vector-icons';
+
+import { Camera, CameraType } from 'expo-camera';
+import { useState } from 'react';
+
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker"; 
+
+import { async } from "@firebase/util";
 
 //Modulo de exportação principal de renderização e funcionamento da tela home.
 
@@ -32,6 +40,32 @@ const HomeScreen = () =>{
       })
       .catch((error) => alert(error.message));
   };
+
+  const [text, setText] = useState("")
+  const [image, setImage] = useState("-")
+
+  GetPhotoPermission = async () => {
+    if (Constants.platform.android){
+      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+
+      if(status != "granted"){
+        alert("We need permission to access."); 
+      }
+    }
+  };
+
+ const PickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3]
+    })
+    if(!result.cancelled){
+      setImage(result.uri)
+      console.log(result.uri)
+    }
+  }
+  
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.head}>
@@ -45,13 +79,16 @@ const HomeScreen = () =>{
         <View style={styles.inputContainer}>
           <Image source={require("../assets/vicky.jpg")} style={styles.avatar}></Image>
           <TextInput autoFocus={true} multiline={true} numberOfLines={4} style={{flex: 1}} placeholder="O que você está pensando atualmente?"></TextInput>
-          <TouchableOpacity style={styles.photo}>
+          <TouchableOpacity style={styles.photo} onPress={PickImage}>
             <Feather name="camera" size={20} color="#2d2d2d"/>
           </TouchableOpacity>
   
           <View style={{marginHorizontal:32, marginTop:32, height:150}}>
-            <Image style={{width:"100%", height:"100%",}}></Image>
+            <Image source={{uri: image }} style={{width:"100%", height:"100%",}}></Image>
           </View>
+        </View>
+        <View style={styles.containerPhoto}>
+        {image && <Image source={{uri: image}} style={{flex: 1}}/>}
         </View>
   
       </SafeAreaView>
@@ -110,5 +147,11 @@ const styles = StyleSheet.create({
   },
   photo:{
     marginTop:23,
-  }
+  },
+  containerPhoto: {
+    flex: 1,
+    maxwidth:200,
+    maxHeight:250,
+    
+  },
 });

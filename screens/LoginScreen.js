@@ -12,6 +12,9 @@ import React, { useEffect, useState } from "react";
 import { auth } from '../firebase';
 import { useNavigation } from "@react-navigation/native";
 
+import { screenHeight, screenWidth } from "../utils/dimensions";
+
+
 //Modulo de exportação principal de renderização e funcionamento da tela de login.
 const LoginScreen = () => {
   //Animação de entrada
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
   },
   backForm:{
     backgroundColor:"#2d2d2d",
-    height:670,
+    height:screenHeight,
     borderRadius:20,
   },
   form: {
