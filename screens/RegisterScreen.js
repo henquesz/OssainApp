@@ -1,4 +1,4 @@
-//Imports / dependencias para o projeto
+ //Imports / dependencias para o projeto
 import {
   KeyboardAvoidingView,
   StyleSheet,
