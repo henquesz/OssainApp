@@ -101,14 +101,21 @@ const HomeScreen = () => {
     firebase
       .firestore()
       .collection("posts")
-      .doc(firebase.auth().currentUser.uid).collection("userPosts").add({
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userPosts")
+      .add({
         DownloadURL,
         text,
-        creation: firebase.firestore.FieldValue.serverTimestamp()
-      }).then((function () {
-        console.log("chegou aqui :)")
-      }))
+        creation: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(function () {
+        console.log("chegou aqui :)");
+      });
   };
+
+  const clearImage = () => {
+    setImage("-");
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -124,35 +131,53 @@ const HomeScreen = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Image
-          source={require("../assets/vicky.jpg")}
-          style={styles.avatar}
-        ></Image>
-        <TextInput
-          autoFocus={true}
-          multiline={true}
-          numberOfLines={4}
-          style={{ flex: 1 }}
-          placeholder="O que você está pensando atualmente?"
-          onChangeText={(text) => setText(text)}
-        ></TextInput>
-        <TouchableOpacity style={styles.photo} onPress={PickImage}>
-          <Feather name="camera" size={20} color="#2d2d2d" />
-        </TouchableOpacity>
 
-        <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
+        <View style={{ marginHorizontal: 32, marginTop: -30, height: 150 }}>
           <Image
             source={{ uri: image }}
             style={{ width: "100%", height: "100%" }}
           ></Image>
         </View>
       </View>
+      
       <View style={styles.containerPhoto}>
-        {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
-      </View>
-      <TouchableOpacity style={styles.button} onPress={UploadPhotoStorage}>
-        <Text style={styles.buttonText}>Upload Photo</Text>
+
+      <View>
+          <Image
+            source={require("../assets/vicky.jpg")}
+            style={styles.avatar}
+          ></Image>
+          <TextInput
+            placeholderTextColor="#cfcfcf"
+            autoFocus={true}
+            multiline={true}
+            numberOfLines={4}
+            style={{ marginTop: -50, marginLeft:70, maxWidth:250, color: "#fff" }}
+            placeholder="O que você está pensando atualmente?"
+            onChangeText={(text) => setText(text)}
+          >
+            
+          </TextInput>
+        <TouchableOpacity style={styles.photo} onPress={PickImage}>
+          <Feather name="camera" size={20} color="white" />
+        </TouchableOpacity>
+        </View>
+
+        {image && (
+          <Image
+            source={{ uri: image }}
+            style={{ flex: 1, borderRadius: 15, margin:20 }}
+          />
+        )}
+
+      <TouchableOpacity style={styles.buttonUpload} onPress={UploadPhotoStorage}>
+        <Text style={styles.buttonText}>Post</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={clearImage}>
+        <Text style={styles.clearText}><Feather name="delete" size={15} color="white"/> Clear Image</Text>
+      </TouchableOpacity>
+      </View>
+      
     </SafeAreaView>
   );
 };
@@ -182,10 +207,26 @@ const styles = StyleSheet.create({
     marginLeft: 245,
     marginTop: -30,
   },
+  buttonUpload: {
+    backgroundColor: "#5ac1ae",
+    width: 100,
+    height: 45,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    margin: 10
+  },
   buttonText: {
     color: "white",
     fontWeight: "900",
-    fontSize: 10,
+    fontSize: 12,
+  },
+  clearText: {
+    color: "white",
+    fontWeight: "900",
+    fontSize: 15,
+    marginTop:-40,
+    marginLeft:300,
   },
   img: {
     width: 30,
@@ -204,15 +245,20 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 24,
-    marginRight: 16,
+    marginLeft: 16,
     marginTop: 10,
   },
   photo: {
-    marginTop: 23,
+    marginTop: -40,
+    marginLeft: 350,
   },
   containerPhoto: {
+    borderRadius:15,
+    backgroundColor:"#2d2d2d",
     flex: 1,
-    maxwidth: 200,
-    maxHeight: 250,
+    width: 390,
+    maxHeight: 290,
+    marginTop: -150,
+    marginLeft: 12,
   },
 });
