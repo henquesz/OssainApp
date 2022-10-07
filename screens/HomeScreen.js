@@ -24,6 +24,9 @@ import * as ImagePicker from "expo-image-picker";
 
 import { async } from "@firebase/util";
 
+import firebase from 'firebase/compat/app';
+require("firebase/compat/storage")
+
 //Modulo de exportação principal de renderização e funcionamento da tela home.
 
 const HomeScreen = () =>{
@@ -62,8 +65,34 @@ const HomeScreen = () =>{
     })
     if(!result.cancelled){
       setImage(result.uri)
-      console.log(result.uri)
+      console.log(image)
     }
+  }
+
+  const UploadPhoto = async () => {
+    const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
+    console.log(childPath);
+
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    const task = firebase.storage().ref().child(childPath).put(blob);
+
+    const taskProgess = snapshot => {
+      console.log(`Tranferido: ${snapshot.bytesTransfered}`)
+    }
+
+    const taskCompleted = () => {
+      task.snapshot.ref.getDownloadURL().then((snapshot) => {
+        console.log(snapshot)
+      })
+    }
+
+    const taskError = snapshot => {
+      console.log(snapshot)
+    }
+    
+    task.on("state_changed", taskProgess, taskError, taskCompleted);
   }
   
     return (
@@ -90,6 +119,9 @@ const HomeScreen = () =>{
         <View style={styles.containerPhoto}>
         {image && <Image source={{uri: image}} style={{flex: 1}}/>}
         </View>
+        <TouchableOpacity style={styles.button} onPress={UploadPhoto}>
+            <Text style={styles.buttonText}>Upload Photo</Text>
+          </TouchableOpacity>
   
       </SafeAreaView>
     );
