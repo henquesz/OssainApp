@@ -1,4 +1,4 @@
-//Imports / dependencias para o projeto
+ //Imports / dependencias para o projeto
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -16,6 +16,8 @@ import HomeScreen from "./HomeScreen";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
+import { windowHeight, windowWidth, screenHeight, screenWidth } from "../utils/dimensions";
+
 //Modulo de exportação principal de renderização e funcionamento da tela de registro.
 const RegisterScreen = () => {
   //Animação de entrada
@@ -32,7 +34,7 @@ const RegisterScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomeScreen");
+        navigation.replace("Home");
       }
     });
     return unsubscribe;
@@ -46,9 +48,9 @@ const RegisterScreen = () => {
         const user = userCredentials.user;
         firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
           name,
-          email
+          email,
         })
-        console.log("Registered in", user.email);
+        console.log("Registered in", name);
       })
       .catch((error) => alert(error.message));
   };
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
   },
   backForm:{
     backgroundColor:"#2d2d2d",
-    height:670,
+    height:screenHeight,
     borderRadius:20,
   },
   inputTitle: {
