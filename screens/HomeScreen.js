@@ -12,28 +12,28 @@ import {
   Pressable,
 } from "react-native";
 import React from "react";
+//import of auth
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
-import { Feather } from "@expo/vector-icons";
-
-import { Camera, CameraType } from "expo-camera";
-import { useState, useEffect } from "react";
-
-import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
-
-import { async } from "@firebase/util";
-
+//firebase imports and utils
 import firebase from "firebase/compat/app";
 import { Firebase } from "react-native-firebase";
 import { doc, onSnapshot, QuerySnapshot } from "@firebase/firestore";
 require("firebase/compat/storage");
 
-//Modulo de exportação principal de renderização e funcionamento da tela home.
+//import icons
+import { Feather } from "@expo/vector-icons";
 
+//import de uso da camera, pemissões e uses
+import { useState, useEffect } from "react";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
+
+//Modulo de exportação principal de renderização e funcionamento da tela home.
 const HomeScreen = () => {
+  //Navvigations
   const navigation = useNavigation();
 
   //Lógica para função de deslogar - firebase
@@ -47,19 +47,21 @@ const HomeScreen = () => {
       .catch((error) => alert(error.message));
   };
 
+  //use states para efetuar novo post
   const [text, setText] = useState("-");
   const [image, setImage] = useState("-");
 
+  //solicitação de permissão para acessar galeria
   GetPhotoPermission = async () => {
     if (Constants.platform.android) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
       if (status != "granted") {
         alert("We need permission to access.");
       }
     }
   };
 
+  //function para abrir galeria e selecionar foto
   const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -72,6 +74,7 @@ const HomeScreen = () => {
     }
   };
 
+  //function para upar foto no firebase
   const UploadPhotoStorage = async () => {
     const childPath = `post/${
       firebase.auth().currentUser.uid
@@ -80,26 +83,23 @@ const HomeScreen = () => {
 
     const response = await fetch(image);
     const blob = await response.blob();
-
     const task = firebase.storage().ref().child(childPath).put(blob);
-
     const taskProgess = (snapshot) => {
       console.log(`Tranferido: ${snapshot.bytesTransfered}`);
     };
-
     const taskCompleted = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
         savePostData(snapshot);
         console.log(snapshot);
       });
     };
-
     const taskError = (snapshot) => {
       console.log(snapshot);
     };
-
     task.on("state_changed", taskProgess, taskError, taskCompleted);
   };
+
+  // function para criar novo post no banco e armazenar url da imagem
   const savePostData = (DownloadURL) => {
     firebase
       .firestore()
@@ -116,48 +116,56 @@ const HomeScreen = () => {
       });
   };
 
+  //function para limpar imagem do placeholder de novo post
   const clearImage = () => {
     setImage("-");
   };
 
+  //use state para  fetch de post
   const [posts, setTextPost] = useState([]);
 
+  //caminho de collections para acesso de fetch
+  const fpost = firebase
+    .firestore()
+    .collection("posts")
+    .doc(firebase.auth().currentUser.uid)
+    .collection("userPosts");
+
+  //function de fetch-test para visualizar o retorno de postagens no banco / query
   const fetchData = () => {
-    useEffect(async () => {
-      firebase
-        .firestore()
-        .collection("posts")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("userPosts")
-        .orderBy("creation", "asc")
-        .get()
-        .then((snapshot) => {
-          let posts = snapshot.docs.map((doc) => {
-            const data = doc.data();
-            const id = doc.id;
-            return { id, ...data };
-          });
-          console.log(posts);
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userPosts")
+      .orderBy("creation", "asc")
+      .get()
+      .then((snapshot) => {
+        let posts = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          const id = doc.id;
+          return { id, ...data };
         });
+        console.log(posts);
+      });
+  };
+
+  //function assincrona para fetch finan / puxar informações para o front
+  useEffect(async () => {
+    await fpost.onSnapshot((querySnapshot) => {
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        const { text, DownloadURL } = doc.data();
+        posts.push({
+          DownloadURL,
+          text,
+        });
+      });
+      setTextPost(posts);
     });
-  }
+  }, []);
 
-    useEffect(async () => {
-     await fetchData(querySnapshot => {
-        const posts = [];
-        querySnapshot.forEach((doc) => {
-          const {text} = doc.data()
-          posts.push({
-            text
-          })
-        })
-        setTextPost(posts)
-      })
-    }, []);
-
-
-
-
+  //front-end
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.head}>
@@ -224,12 +232,25 @@ const HomeScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.cont}>
-        <FlatList numColumns={1} horizontal={false} data={posts} renderItem={({item}) => (
-            <Text style={{itemtext}}>{item.text}</Text>
-        )}>
 
-        </FlatList>
+      //view / flat list para criação de posts no front-end
+      <View style={{ flex: 1, marginTop: 20 }}>
+        <FlatList
+          numColumns={1}
+          horizontal={false}
+          data={posts}
+          renderItem={({ item }) => (
+            <Pressable style={styles.cont}>
+              <View style={styles.innercont}>
+                <Text style={styles.itemtext}>{item.text}</Text>
+                <Image
+                  style={styles.img}
+                  source={{ uri: item.DownloadURL }}
+                ></Image>
+              </View>
+            </Pressable>
+          )}
+        ></FlatList>
       </View>
     </SafeAreaView>
   );
@@ -330,6 +351,12 @@ const styles = StyleSheet.create({
   },
   itemtext: {
     fontWeight: "300",
-    color:"white",
+    color: "white",
+  },
+  img: {
+    flex: 1,
+    width: 320,
+    height: 200,
+    borderRadius: 15,
   },
 });
