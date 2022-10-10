@@ -28,7 +28,7 @@ import { async } from "@firebase/util";
 
 import firebase from "firebase/compat/app";
 import { Firebase } from "react-native-firebase";
-import { doc, QuerySnapshot } from "@firebase/firestore";
+import { doc, onSnapshot, QuerySnapshot } from "@firebase/firestore";
 require("firebase/compat/storage");
 
 //Modulo de exportação principal de renderização e funcionamento da tela home.
@@ -120,23 +120,43 @@ const HomeScreen = () => {
     setImage("-");
   };
 
-  const fetchPosts = () => {
-    firebase
-      .firestore()
-      .collection("posts")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("userPosts")
-      .orderBy("creation", "asc")
-      .get()
-      .then((snapshot) => {
-        let posts = snapshot.docs.map(doc => {
-          const data = doc.data();
-          const id = doc.id;
-          return {id, ...data}
+  const [posts, setTextPost] = useState([]);
+
+  const fetchData = () => {
+    useEffect(async () => {
+      firebase
+        .firestore()
+        .collection("posts")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("userPosts")
+        .orderBy("creation", "asc")
+        .get()
+        .then((snapshot) => {
+          let posts = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            const id = doc.id;
+            return { id, ...data };
+          });
+          console.log(posts);
+        });
+    });
+  }
+
+    useEffect(async () => {
+     await fetchData(querySnapshot => {
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+          const {text} = doc.data()
+          posts.push({
+            text
+          })
         })
-        console.log(posts)
-      });
-};
+        setTextPost(posts)
+      })
+    }, []);
+
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -204,9 +224,13 @@ const HomeScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={fetchPosts}>
-        <Feather name="download-cloud" size={20} color="black" />
-      </TouchableOpacity>
+      <View style={styles.cont}>
+        <FlatList numColumns={1} horizontal={false} data={posts} renderItem={({item}) => (
+            <Text style={{itemtext}}>{item.text}</Text>
+        )}>
+
+        </FlatList>
+      </View>
     </SafeAreaView>
   );
 };
@@ -306,5 +330,6 @@ const styles = StyleSheet.create({
   },
   itemtext: {
     fontWeight: "300",
+    color:"white",
   },
 });
