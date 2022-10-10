@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  FlatList,
+  Pressable,
 } from "react-native";
 import React from "react";
 import { auth } from "../firebase";
@@ -16,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 import { Camera, CameraType } from "expo-camera";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
@@ -26,6 +28,7 @@ import { async } from "@firebase/util";
 
 import firebase from "firebase/compat/app";
 import { Firebase } from "react-native-firebase";
+import { doc, QuerySnapshot } from "@firebase/firestore";
 require("firebase/compat/storage");
 
 //Modulo de exportação principal de renderização e funcionamento da tela home.
@@ -115,7 +118,25 @@ const HomeScreen = () => {
 
   const clearImage = () => {
     setImage("-");
-  }
+  };
+
+  const fetchPosts = () => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userPosts")
+      .orderBy("creation", "asc")
+      .get()
+      .then((snapshot) => {
+        let posts = snapshot.docs.map(doc => {
+          const data = doc.data();
+          const id = doc.id;
+          return {id, ...data}
+        })
+        console.log(posts)
+      });
+};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -131,7 +152,6 @@ const HomeScreen = () => {
       </View>
 
       <View style={styles.inputContainer}>
-
         <View style={{ marginHorizontal: 32, marginTop: -30, height: 150 }}>
           <Image
             source={{ uri: image }}
@@ -139,10 +159,9 @@ const HomeScreen = () => {
           ></Image>
         </View>
       </View>
-      
-      <View style={styles.containerPhoto}>
 
-      <View>
+      <View style={styles.containerPhoto}>
+        <View>
           <Image
             source={require("../assets/vicky.jpg")}
             style={styles.avatar}
@@ -152,32 +171,42 @@ const HomeScreen = () => {
             autoFocus={true}
             multiline={true}
             numberOfLines={4}
-            style={{ marginTop: -50, marginLeft:70, maxWidth:250, color: "#fff" }}
+            style={{
+              marginTop: -50,
+              marginLeft: 70,
+              maxWidth: 250,
+              color: "#fff",
+            }}
             placeholder="O que você está pensando atualmente?"
             onChangeText={(text) => setText(text)}
-          >
-            
-          </TextInput>
-        <TouchableOpacity style={styles.photo} onPress={PickImage}>
-          <Feather name="camera" size={20} color="white" />
-        </TouchableOpacity>
+          ></TextInput>
+          <TouchableOpacity style={styles.photo} onPress={PickImage}>
+            <Feather name="camera" size={20} color="white" />
+          </TouchableOpacity>
         </View>
 
         {image && (
           <Image
             source={{ uri: image }}
-            style={{ flex: 1, borderRadius: 15, margin:20 }}
+            style={{ flex: 1, borderRadius: 15, margin: 20 }}
           />
         )}
 
-      <TouchableOpacity style={styles.buttonUpload} onPress={UploadPhotoStorage}>
-        <Text style={styles.buttonText}>Post</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={clearImage}>
-        <Text style={styles.clearText}><Feather name="delete" size={15} color="white"/> Clear Image</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonUpload}
+          onPress={UploadPhotoStorage}
+        >
+          <Text style={styles.buttonText}>Post</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={clearImage}>
+          <Text style={styles.clearText}>
+            <Feather name="delete" size={15} color="white" /> Clear Image
+          </Text>
+        </TouchableOpacity>
       </View>
-      
+      <TouchableOpacity onPress={fetchPosts}>
+        <Feather name="download-cloud" size={20} color="black" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -214,7 +243,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    margin: 10
+    margin: 10,
   },
   buttonText: {
     color: "white",
@@ -225,8 +254,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "900",
     fontSize: 15,
-    marginTop:-40,
-    marginLeft:300,
+    marginTop: -40,
+    marginLeft: 300,
   },
   img: {
     width: 30,
@@ -253,12 +282,29 @@ const styles = StyleSheet.create({
     marginLeft: 350,
   },
   containerPhoto: {
-    borderRadius:15,
-    backgroundColor:"#2d2d2d",
+    borderRadius: 15,
+    backgroundColor: "#2d2d2d",
     flex: 1,
     width: 390,
     maxHeight: 290,
     marginTop: -150,
     marginLeft: 12,
+  },
+  cont: {
+    backgroundColor: "#2d2d2d",
+    padding: 15,
+    borderRadius: 15,
+    margin: 5,
+    marginHorizontal: 10,
+  },
+  innercont: {
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  creation: {
+    fontWeight: "bold",
+  },
+  itemtext: {
+    fontWeight: "300",
   },
 });
