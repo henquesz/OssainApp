@@ -41,7 +41,6 @@ const HomeScreen = () => {
     auth
       .signOut()
       .then(() => {
-        // navigation.replace("InitialScreen");
         navigation.replace("InitialScreen");
       })
       .catch((error) => alert(error.message));
@@ -169,25 +168,15 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.head}>
-        <Image
+        {/* <Image
           source={require("../assets/vicky.jpg")}
           style={styles.img}
         ></Image>
         <Text style={styles.text}>Welcome, {auth.currentUser?.email}</Text>
         <TouchableOpacity style={styles.button} onPress={handleSignOut}>
           <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
-
-      <View style={styles.inputContainer}>
-        <View style={{ marginHorizontal: 32, marginTop: -30, height: 150 }}>
-          <Image
-            source={{ uri: image }}
-            style={{ width: "100%", height: "100%" }}
-          ></Image>
-        </View>
-      </View>
-
       <View style={styles.containerPhoto}>
         <View>
           <Image
@@ -213,12 +202,9 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {image && (
-          <Image
-            source={{ uri: image }}
-            style={{ flex: 1, borderRadius: 15, margin: 20 }}
-          />
-        )}
+            <View>
+              <Text></Text>
+            </View>
 
         <TouchableOpacity
           style={styles.buttonUpload}
@@ -232,8 +218,7 @@ const HomeScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
-      //view / flat list para criação de posts no front-end
+      {/* //view / flat list para criação de posts no front-end */}
       <View style={{ flex: 1, marginTop: 20 }}>
         <FlatList
           numColumns={1}
@@ -289,6 +274,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     margin: 10,
+    marginTop:25,
   },
   buttonText: {
     color: "white",
@@ -299,7 +285,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "900",
     fontSize: 15,
-    marginTop: -40,
+    marginTop: -35,
     marginLeft: 300,
   },
   img: {
@@ -312,7 +298,6 @@ const styles = StyleSheet.create({
     marginTop: -25,
   },
   inputContainer: {
-    margin: 32,
     flexDirection: "row",
   },
   avatar: {
@@ -331,8 +316,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#2d2d2d",
     flex: 1,
     width: 390,
-    maxHeight: 290,
-    marginTop: -150,
+    maxHeight: 130,
     marginLeft: 12,
   },
   cont: {
@@ -343,7 +327,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   innercont: {
-    alignItems: "center",
+    alignItems: "flex-start",
     flexDirection: "column",
   },
   creation: {
@@ -352,11 +336,13 @@ const styles = StyleSheet.create({
   itemtext: {
     fontWeight: "300",
     color: "white",
+    marginLeft:5,
+    marginBottom:10,
   },
   img: {
     flex: 1,
-    width: 320,
+    width: 365,
     height: 200,
-    borderRadius: 15,
+    borderRadius: 10,
   },
 });
