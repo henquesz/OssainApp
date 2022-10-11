@@ -122,6 +122,7 @@ const HomeScreen = () => {
 
   //use state para  fetch de post
   const [posts, setTextPost] = useState([]);
+  const [photos, setTextPhotos] = useState("");
 
   //caminho de collections para acesso de fetch
   const fpost = firebase
@@ -129,6 +130,13 @@ const HomeScreen = () => {
     .collection("posts")
     .doc(firebase.auth().currentUser.uid)
     .collection("userPosts");
+
+  //caminho de collections para acesso de fetch - photos
+  const fphotos = firebase
+  .firestore()
+  .collection("users")
+  .doc(firebase.auth().currentUser.uid)
+  .collection("userPhotos");
 
   //function de fetch-test para visualizar o retorno de postagens no banco / query
   const fetchData = () => {
@@ -148,6 +156,38 @@ const HomeScreen = () => {
         console.log(posts);
       });
   };
+
+    //function de fetch-test para visualizar o retorno de postagens no banco / query - photos
+    const fetchDataPhoto = () => {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("userPhotos")
+        .get()
+        .then((snapshot) => {
+          let photos = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            const id = doc.id;
+            return { id, ...data };
+          });
+          console.log(photos);
+        });
+    };
+
+    //function assincrona para fetch finan / puxar informações para o front - photos
+  useEffect(async () => {
+    await fphotos.onSnapshot((querySnapshot) => {
+      const photos = [];
+      querySnapshot.forEach((doc) => {
+        const { DownloadURL } = doc.data();
+        posts.push({
+          DownloadURL
+        });
+      });
+      setTextPhotos(photos);
+    });
+  }, []);
 
   //function assincrona para fetch finan / puxar informações para o front
   useEffect(async () => {
@@ -180,7 +220,7 @@ const HomeScreen = () => {
       <View style={styles.containerPhoto}>
         <View>
           <Image
-            source={require("../assets/vicky.jpg")}
+            source={{uri: photos}}
             style={styles.avatar}
           ></Image>
           <TextInput
