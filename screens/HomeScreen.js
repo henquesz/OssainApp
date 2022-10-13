@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 
 //firebase imports and utils
 import firebase from "firebase/compat/app";
-import { Firebase } from "react-native-firebase";
+import { database, Firebase } from "react-native-firebase";
 import { doc, onSnapshot, QuerySnapshot } from "@firebase/firestore";
 require("firebase/compat/storage");
 
@@ -102,9 +102,7 @@ const HomeScreen = () => {
   const savePostData = (DownloadURL) => {
     firebase
       .firestore()
-      .collection("posts")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("userPosts")
+      .collection("userPost")
       .add({
         DownloadURL,
         text,
@@ -127,9 +125,7 @@ const HomeScreen = () => {
   //caminho de collections para acesso de fetch
   const fpost = firebase
     .firestore()
-    .collection("posts")
-    .doc(firebase.auth().currentUser.uid)
-    .collection("userPosts");
+    .collection("userPost")
 
   //caminho de collections para acesso de fetch - photos
   const fphotos = firebase
@@ -142,9 +138,7 @@ const HomeScreen = () => {
   const fetchData = () => {
     firebase
       .firestore()
-      .collection("posts")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("userPosts")
+      .collection("userPost")
       .orderBy("creation", "asc")
       .get()
       .then((snapshot) => {

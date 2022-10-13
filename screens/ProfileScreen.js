@@ -73,9 +73,9 @@ export default function ProfileScreen() {
   const savePostData = (DownloadURL) => {
     firebase
       .firestore()
-      .collection("users")
+      .collection("dataUsers")
       .doc(firebase.auth().currentUser.uid)
-      .collection("userPhotos")
+      .collection("userInfo")
       .add({
         DownloadURL,
       })
