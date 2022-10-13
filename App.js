@@ -24,9 +24,9 @@ const Tab = createBottomTabNavigator();
 function Home() {
   return (
       <Tab.Navigator>
-         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarHideOnKeyboard:true, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="bookmark" size={30} color="black"/>}}} />
+         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarHideOnKeyboard:true, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="home" size={25} color="black"/>}}} />
           <Tab.Screen name="ApiScreen" component={ApiScreen}  options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="feather" size={25} color="black"/>}}} />
-          <Tab.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="user" size={30} color="black"/>}}} />
+          <Tab.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="user" size={25} color="black"/>}}} />
       </Tab.Navigator>
   );
 }
