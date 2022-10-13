@@ -235,10 +235,7 @@ const HomeScreen = () => {
             <Feather name="camera" size={20} color="white" />
           </TouchableOpacity>
         </View>
-
-            <View>
-              <Text></Text>
-            </View>
+        
 
         <TouchableOpacity
           style={styles.buttonUpload}
@@ -252,6 +249,10 @@ const HomeScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.pontos}>
+      <Feather name="more-horizontal" size={20} color="black" />
+      </View>
+      s
       {/* //view / flat list para criação de posts no front-end */}
       <View style={{ flex: 1, marginTop: 20 }}>
         <FlatList
@@ -378,5 +379,9 @@ const styles = StyleSheet.create({
     width: 365,
     height: 200,
     borderRadius: 10,
+  },
+  pontos: {
+    marginLeft:200,
+    marginTop:10,
   },
 });
