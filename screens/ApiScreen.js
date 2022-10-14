@@ -74,6 +74,15 @@ export default function ApiScreen() {
         <Text style={styles.cardSubText}>Pressure</Text>
       </View>
       <View style={styles.card5}>
+          <View style={styles.subCard1}>
+            <Text style={styles.cardMenorSubText}>Ventos</Text>
+            <Text style={styles.cardSubText}>{wind}</Text>
+          </View>
+
+          <View style={styles.subCard2}>
+            <Text style={styles.cardMenorSubText}>Umidade</Text>
+            <Text style={styles.cardSubText}>{umidity}</Text>
+          </View>
       </View>
       <TouchableOpacity onPress={() => setCurrentWeather()} style={{marginTop:15,}}>
         <Feather name="arrow-down-circle" size={30} color="#2d2d2d" />
@@ -139,17 +148,39 @@ const styles = StyleSheet.create({
     marginTop:25,
   },
   cardText:{
-    color:"white",
+    color:"#dedede",
     fontSize:55,
   },
   cardSubText:{
-    color:"white",
+    color:"#dedede",
     fontSize:20,
   },
   cardText2:{
-    color:"white",
+    color:"#dedede",
     fontSize:30,
     textAlign:"center"
   },
+  subCard1: {
+    justifyContent: "center",
+    alignItems: "center",
+    width:170,
+    height:135,
+    margin:6,
+    borderRadius:10,
+    marginLeft:7,
+  },
+  subCard2: {
+    justifyContent: "center",
+    alignItems: "center",
+    width:170,
+    height:135,
+    borderRadius:10,
+    marginLeft:195,
+    marginTop:-140,
+  },
+  cardMenorSubText:{
+    color:"#dedede",
+    fontSize:25,
+  }
 
 });
