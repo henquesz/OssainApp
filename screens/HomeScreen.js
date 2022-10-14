@@ -252,7 +252,6 @@ const HomeScreen = () => {
       <View style={styles.pontos}>
       <Feather name="more-horizontal" size={20} color="black" />
       </View>
-      s
       {/* //view / flat list para criação de posts no front-end */}
       <View style={{ flex: 1, marginTop: 20 }}>
         <FlatList
