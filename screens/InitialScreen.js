@@ -1,5 +1,5 @@
 //Imports / dependencias para o projeto
-import { StyleSheet, Text, View, TouchableOpacity, Image, LayoutAnimation } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, LayoutAnimation, ImageBackground } from "react-native";
 import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -23,9 +23,14 @@ const InitialScreen = () => {
   const pageRedirectSignUp = () => {
     navigation.replace("RegisterScreen")
 }
+
+const image = { uri: "../assets/nature.jpg" };
+
   //Componentes visuais / front da aplicação
   return (
     <View style={styles.container}>
+      
+      <ImageBackground source={image} style={styles.image} >
       <Image
         source={require("../assets/ossain.png")}
         style={styles.img}
@@ -46,6 +51,8 @@ const InitialScreen = () => {
           </Text>
         </TouchableOpacity>
 
+      </ImageBackground>
+
     </View>
   );
 };
@@ -58,6 +65,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   button: {
     marginHorizontal: 30,
     backgroundColor: "#000",
@@ -65,7 +77,7 @@ const styles = StyleSheet.create({
     height: 52,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 300,
+    marginTop: 410,
   },
   img: {
     width: 350,

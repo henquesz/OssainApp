@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 
 //firebase imports and utils
 import firebase from "firebase/compat/app";
-import { Firebase } from "react-native-firebase";
+import { database, Firebase } from "react-native-firebase";
 import { doc, onSnapshot, QuerySnapshot } from "@firebase/firestore";
 require("firebase/compat/storage");
 
@@ -102,16 +102,14 @@ const HomeScreen = () => {
   const savePostData = (DownloadURL) => {
     firebase
       .firestore()
-      .collection("posts")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("userPosts")
+      .collection("userPost")
       .add({
         DownloadURL,
         text,
         creation: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(function () {
-        console.log("chegou aqui :)");
+        console.log("Armazenamento de post / texto / imagem no banco com sucesso");
       });
   };
 
@@ -122,21 +120,24 @@ const HomeScreen = () => {
 
   //use state para  fetch de post
   const [posts, setTextPost] = useState([]);
+  const [photos, setTextPhotos] = useState("");
+  const [name, setTextName] = useState("");
 
   //caminho de collections para acesso de fetch
   const fpost = firebase
     .firestore()
-    .collection("posts")
-    .doc(firebase.auth().currentUser.uid)
-    .collection("userPosts");
+    .collection("userPost")
+
+  //caminho de collections para acesso de fetch para nome
+  const fnome = firebase
+  .firestore()
+  .collection("users")
 
   //function de fetch-test para visualizar o retorno de postagens no banco / query
   const fetchData = () => {
     firebase
       .firestore()
-      .collection("posts")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("userPosts")
+      .collection("userPost")
       .orderBy("creation", "asc")
       .get()
       .then((snapshot) => {
@@ -149,9 +150,26 @@ const HomeScreen = () => {
       });
   };
 
+    //function de fetch-test para visualizar o retorno de postagens no banco / query - photos
+    const fetchDataPhoto = () => {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .get()
+        .then((snapshot) => {
+          let photo = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            const id = doc.id;
+            return { id, ...data };
+          });
+          console.log(photo);
+        });
+    };
+
   //function assincrona para fetch finan / puxar informações para o front
-  useEffect(async () => {
-    await fpost.onSnapshot((querySnapshot) => {
+  useEffect( () => {
+     fpost.onSnapshot((querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
         const { text, DownloadURL } = doc.data();
@@ -180,7 +198,7 @@ const HomeScreen = () => {
       <View style={styles.containerPhoto}>
         <View>
           <Image
-            source={require("../assets/vicky.jpg")}
+            source={{uri: photos}}
             style={styles.avatar}
           ></Image>
           <TextInput
@@ -201,10 +219,7 @@ const HomeScreen = () => {
             <Feather name="camera" size={20} color="white" />
           </TouchableOpacity>
         </View>
-
-            <View>
-              <Text></Text>
-            </View>
+        
 
         <TouchableOpacity
           style={styles.buttonUpload}
@@ -217,6 +232,9 @@ const HomeScreen = () => {
             <Feather name="delete" size={15} color="white" /> Clear Image
           </Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.pontos}>
+      <Feather name="more-horizontal" size={20} color="black" />
       </View>
       {/* //view / flat list para criação de posts no front-end */}
       <View style={{ flex: 1, marginTop: 20 }}>
@@ -344,5 +362,9 @@ const styles = StyleSheet.create({
     width: 365,
     height: 200,
     borderRadius: 10,
+  },
+  pontos: {
+    marginLeft:200,
+    marginTop:10,
   },
 });

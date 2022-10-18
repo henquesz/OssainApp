@@ -5,6 +5,8 @@ import {
   KeyboardAvoidingView,
   Image,
   TouchableOpacity,
+  FlatList,
+  Pressable,
 } from "react-native";
 import React from "react";
 
@@ -16,6 +18,13 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
+import {
+  windowHeight,
+  windowWidth,
+  screenHeight,
+  screenWidth,
+} from "../utils/dimensions";
+
 //firebase imports and utils
 import firebase from "firebase/compat/app";
 import { Firebase } from "react-native-firebase";
@@ -24,6 +33,7 @@ require("firebase/compat/storage");
 
 export default function ProfileScreen() {
   const [image, setImage] = useState("-");
+  const [avatar, setAvatar] = useState("-");
 
   GetPhotoPermission = async () => {
     if (Constants.platform.android) {
@@ -70,42 +80,59 @@ export default function ProfileScreen() {
     task.on("state_changed", taskProgess, taskError, taskCompleted);
   };
 
+  const fetchData = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then((snapshot) => {
+        let photos = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          const id = doc.id;
+          return { id, ...data };
+        });
+        console.log(photos);
+      });
+  };
+
   const savePostData = (DownloadURL) => {
     firebase
       .firestore()
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
-      .collection("userPhotos")
-      .add({
+      .update({
         DownloadURL,
       })
       .then(function () {
-        console.log("chegou aqui aaaa");
+        setAvatar(DownloadURL)
+        console.log("Armazenamento da foto de perfil salva com sucesso");
       });
   };
-  
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={PickImage}>
-        <View style={styles.imgcont}>
-          <Image
-            source={{ uri: image }}
-            style={{ width: "100%", height: "100%", borderRadius: 80 }}
-          ></Image>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: 30,
-          height: 30,
-          backgroundColor: "#5ac1ae",
-          borderRadius: 30,
-        }}
-        onPress={UploadPhotoStorage}
-      >
-        <Feather name="check" size={26} color="white" />
-      </TouchableOpacity>
+      <View style={styles.backCont}>
+        <TouchableOpacity onPress={PickImage}>
+          <View style={styles.imgcont}>
+            <Image
+              source={{ uri: image }}
+              style={{ width: "100%", height: "100%", borderRadius: 80 }}
+            ></Image>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: 30,
+            height: 30,
+            backgroundColor: "#5ac1ae",
+            borderRadius: 30,
+          }}
+          onPress={UploadPhotoStorage}
+        >
+          <Feather name="check" size={26} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -118,10 +145,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  backCont: {
+    width: screenWidth,
+    height: screenHeight,
+    backgroundColor: "white",
+    marginTop: 450,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 8,
+      height: 11,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 14.78,
+
+    elevation: 22,
+  },
   imgcont: {
     width: 150,
     height: 150,
     backgroundColor: "#2d2d2d",
     borderRadius: 80,
+    marginTop: -80,
+    marginLeft: 135,
+    borderWidth: 2,
+    borderColor: "white",
   },
 });

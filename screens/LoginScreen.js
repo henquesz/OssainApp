@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
     width:70,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor:"#ebebeb"
   },
   img: {
     width: 250,
