@@ -14,12 +14,13 @@ export default async function getCurrentWeather(locationCoords){
         const locationName = (data.sys.country + ', ' + data.name)
         const temperaturaMin = data.main.temp_min
         const temperaturaMax = data.main.temp_max
-        const wind = data.main.wind
+        const wind = data.wind.speed
+        const windDeg = data.wind.deg
         const humidity = data.main.humidity
         const pressure = data.main.pressure
         const currentTemperature = data.main.temp_max
 
-        results = [currentTemperature, temperaturaMin, temperaturaMax, locationName, wind, humidity, pressure]
+        results = [currentTemperature, temperaturaMin, temperaturaMax, locationName, wind, windDeg, humidity, pressure]
 
         console.log(data)
     }).catch((error) => {

@@ -12,6 +12,7 @@ import getCurrentWeather from '../api/ConsultApi';
 export default function ApiScreen() {
 
   const [wind, setWind] = useState('65')
+  const [windDeg, setWindDeg] = useState('65')
   const [umidity, setUmidity] = useState('80')
   const [tempMin, setTempMin] = useState('21')
   const [tempMax, setTempMax] = useState('27')
@@ -31,8 +32,9 @@ export default function ApiScreen() {
     setTempMax(convertToC(data[2]))
     setLocation(data[3])
     setWind(data[4])
-    setUmidity(data[5])
-    setPressure(data[6])
+    setWindDeg(data[5])
+    setUmidity(data[6])
+    setPressure(data[7])
   }
 
   function convertToC(kelvin){
@@ -76,7 +78,8 @@ export default function ApiScreen() {
       <View style={styles.card5}>
           <View style={styles.subCard1}>
             <Text style={styles.cardMenorSubText}>Ventos</Text>
-            <Text style={styles.cardSubText}>{wind}</Text>
+            <Text style={styles.cardSubText}>{wind} KM/H</Text>
+            <Text style={styles.cardSubText}>{windDeg} Deg</Text>
           </View>
 
           <View style={styles.subCard2}>

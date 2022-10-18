@@ -18,6 +18,13 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
+import {
+  windowHeight,
+  windowWidth,
+  screenHeight,
+  screenWidth,
+} from "../utils/dimensions";
+
 //firebase imports and utils
 import firebase from "firebase/compat/app";
 import { Firebase } from "react-native-firebase";
@@ -72,10 +79,10 @@ export default function ProfileScreen() {
     task.on("state_changed", taskProgess, taskError, taskCompleted);
   };
   const fphoto = firebase
-  .firestore()
-  .collection("dataUsers")
-  .doc(firebase.auth().currentUser.uid)
-  .collection("userInfo");
+    .firestore()
+    .collection("dataUsers")
+    .doc(firebase.auth().currentUser.uid)
+    .collection("userInfo");
 
   const fetchData = () => {
     firebase
@@ -98,9 +105,9 @@ export default function ProfileScreen() {
   const savePostData = (DownloadURL) => {
     firebase
       .firestore()
-      .collection("dataUsers")
+      .collection("users")
       .doc(firebase.auth().currentUser.uid)
-      .collection("userInfo")
+      .collection("photoProfile")
       .add({
         DownloadURL,
       })
@@ -113,11 +120,11 @@ export default function ProfileScreen() {
 
   useEffect(async () => {
     await fphoto.onSnapshot((querySnapshot) => {
-      const photo = [];
+      const photo = ("");
       querySnapshot.forEach((doc) => {
         const { DownloadURL } = doc.data();
         photo.push({
-          DownloadURL
+          DownloadURL,
         });
       });
       setTextPhotos(photos);
@@ -126,36 +133,38 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={PickImage}>
-        <View style={styles.imgcont}>
-          <FlatList
-            numColumns={1}
-            horizontal={false}
-            data={photos}
-            renderItem={({ item }) => (
-                  <Image
-                    style={styles.img}
-                    source={{ uri: item.DownloadURL }}
-                  ></Image>
-            )}
-          ></FlatList>
-          <Image
-            source={{ uri: image }}
-            style={{ width: "100%", height: "100%", borderRadius: 80 }}
-          ></Image>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: 30,
-          height: 30,
-          backgroundColor: "#5ac1ae",
-          borderRadius: 30,
-        }}
-        onPress={UploadPhotoStorage}
-      >
-        <Feather name="check" size={26} color="white" />
-      </TouchableOpacity>
+      <View style={styles.backCont}>
+        <TouchableOpacity onPress={PickImage}>
+          <View style={styles.imgcont}>
+            <FlatList
+              numColumns={1}
+              horizontal={false}
+              data={photos}
+              renderItem={({ item }) => (
+                <Image
+                  style={styles.img}
+                  source={{ uri: item.DownloadURL }}
+                ></Image>
+              )}
+            ></FlatList>
+            <Image
+              source={{ uri: image }}
+              style={{ width: "100%", height: "100%", borderRadius: 80 }}
+            ></Image>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: 30,
+            height: 30,
+            backgroundColor: "#5ac1ae",
+            borderRadius: 30,
+          }}
+          onPress={UploadPhotoStorage}
+        >
+          <Feather name="check" size={26} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -168,10 +177,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  backCont: {
+    width: screenWidth,
+    height: screenHeight,
+    backgroundColor: "white",
+    marginTop: 450,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 8,
+      height: 11,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 14.78,
+
+    elevation: 22,
+  },
   imgcont: {
     width: 150,
     height: 150,
     backgroundColor: "#2d2d2d",
     borderRadius: 80,
+    marginTop: -80,
+    marginLeft: 135,
+    borderWidth: 2,
+    borderColor: "white",
   },
 });
