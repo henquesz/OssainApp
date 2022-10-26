@@ -12,6 +12,8 @@ import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ApiScreen from './screens/ApiScreen';
+import Report from './screens/Report';
+import ReportTwo from './screens/ReportTwo';
 import ProfileScreen from './screens/ProfileScreen';
 
 import {Feather, EvilIcons} from '@expo/vector-icons'
@@ -24,7 +26,7 @@ const Tab = createBottomTabNavigator();
 function Home() {
   return (
       <Tab.Navigator>
-         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarHideOnKeyboard:true, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="home" size={25} color="black"/>}}} />
+         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarHideOnKeyboard:false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="home" size={25} color="black"/>}}} />
           <Tab.Screen name="ApiScreen" component={ApiScreen}  options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="feather" size={25} color="black"/>}}} />
           <Tab.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="user" size={25} color="black"/>}}} />
       </Tab.Navigator>
@@ -41,6 +43,8 @@ export default function App() {
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="InitialScreen" component={InitialScreen} />
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="LoginScreen" component={LoginScreen} />
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="RegisterScreen" component={RegisterScreen} />
+        <Stack.Screen options={{headerShown: false, MyTabs: false, tabBarHideOnKeyboard:false}} name="Report" component={Report} />
+        <Stack.Screen options={{headerShown: false, MyTabs: false, tabBarHideOnKeyboard:false}} name="ReportTwo" component={ReportTwo} />
         <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -63,5 +67,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius:15,
     height:50,
-  }
+  },
+  
 });

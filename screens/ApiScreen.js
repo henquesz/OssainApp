@@ -2,6 +2,8 @@ import { View, StyleSheet, Text, Button, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
 
+import { useNavigation } from "@react-navigation/native";
+
 import { Feather } from "@expo/vector-icons";
 
 // import * as Location from "expo-location"
@@ -10,6 +12,8 @@ import * as Location from 'expo-location';
 import getCurrentWeather from '../api/ConsultApi';
 
 export default function ApiScreen() {
+
+  const navigation = useNavigation()
 
   const [wind, setWind] = useState('65')
   const [windDeg, setWindDeg] = useState('65')
@@ -42,7 +46,7 @@ export default function ApiScreen() {
   }
 
   async function getLocation(){
-    let { status } = await Location.requestPermissionsAsync()
+    let { status } = await Location.requestForegroundPermissionsAsync()
     if(status !== 'granted'){
       alert("Permissão de localização não autorizada");
     }else{
@@ -54,8 +58,15 @@ export default function ApiScreen() {
     setCurrentWeather()
   }, [])
 
+  const pageRedirect = () => {
+    navigation.replace("Report")
+}
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={pageRedirect}>
+       <Feather name="alert-octagon" size={30} color="black" style={{marginTop:20,}} />
+      </TouchableOpacity>
       <View style={styles.card1}>
       <Feather name="sun" size={30} color="yellow" />
         <Text style={styles.cardText}>{currentTemperature}<Text style={styles.cardText}>°C</Text></Text>

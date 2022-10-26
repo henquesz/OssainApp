@@ -109,7 +109,7 @@ const HomeScreen = () => {
         creation: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(function () {
-        console.log("chegou aqui :)");
+        console.log("Armazenamento de post / texto / imagem no banco com sucesso");
       });
   };
 
@@ -168,8 +168,8 @@ const HomeScreen = () => {
     };
 
   //function assincrona para fetch finan / puxar informações para o front
-  useEffect(async () => {
-    await fpost.onSnapshot((querySnapshot) => {
+  useEffect( () => {
+     fpost.onSnapshot((querySnapshot) => {
       const posts = [];
       querySnapshot.forEach((doc) => {
         const { text, DownloadURL } = doc.data();

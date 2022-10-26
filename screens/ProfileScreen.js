@@ -106,7 +106,7 @@ export default function ProfileScreen() {
       })
       .then(function () {
         setAvatar(DownloadURL)
-        console.log("chegou aqui aaaa");
+        console.log("Armazenamento da foto de perfil salva com sucesso");
       });
   };
 
