@@ -33,6 +33,7 @@ require("firebase/compat/storage");
 
 export default function ProfileScreen() {
   const [image, setImage] = useState("-");
+  const [avatar, setAvatar] = useState("-");
 
   GetPhotoPermission = async () => {
     if (Constants.platform.android) {
@@ -78,19 +79,12 @@ export default function ProfileScreen() {
     };
     task.on("state_changed", taskProgess, taskError, taskCompleted);
   };
-  const fphoto = firebase
-    .firestore()
-    .collection("dataUsers")
-    .doc(firebase.auth().currentUser.uid)
-    .collection("userInfo");
 
   const fetchData = () => {
     firebase
       .firestore()
-      .collection("dataUsers")
+      .collection("users")
       .doc(firebase.auth().currentUser.uid)
-      .collection("userInfo")
-      .orderBy("creation", "asc")
       .get()
       .then((snapshot) => {
         let photos = snapshot.docs.map((doc) => {
@@ -107,46 +101,20 @@ export default function ProfileScreen() {
       .firestore()
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
-      .collection("photoProfile")
-      .add({
+      .update({
         DownloadURL,
       })
       .then(function () {
+        setAvatar(DownloadURL)
         console.log("chegou aqui aaaa");
       });
   };
-
-  const [photos, setTextPhotos] = useState("");
-
-  useEffect(async () => {
-    await fphoto.onSnapshot((querySnapshot) => {
-      const photo = ("");
-      querySnapshot.forEach((doc) => {
-        const { DownloadURL } = doc.data();
-        photo.push({
-          DownloadURL,
-        });
-      });
-      setTextPhotos(photos);
-    });
-  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.backCont}>
         <TouchableOpacity onPress={PickImage}>
           <View style={styles.imgcont}>
-            <FlatList
-              numColumns={1}
-              horizontal={false}
-              data={photos}
-              renderItem={({ item }) => (
-                <Image
-                  style={styles.img}
-                  source={{ uri: item.DownloadURL }}
-                ></Image>
-              )}
-            ></FlatList>
             <Image
               source={{ uri: image }}
               style={{ width: "100%", height: "100%", borderRadius: 80 }}
