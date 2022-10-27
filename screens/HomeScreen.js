@@ -198,7 +198,7 @@ const HomeScreen = () => {
       <View style={styles.containerPhoto}>
         <View>
           <Image
-            source={{uri: photos}}
+            source={require("../assets/perfil.jpg")}
             style={styles.avatar}
           ></Image>
           <TextInput
@@ -343,6 +343,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     margin: 5,
     marginHorizontal: 10,
+    marginBottom:15,
   },
   innercont: {
     alignItems: "flex-start",

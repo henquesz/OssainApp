@@ -112,16 +112,35 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
+       <Image
+               source={require("../assets/nature.jpg")}
+              style={styles.wallpaper}
+            ></Image>
       <View style={styles.backCont}>
         <TouchableOpacity onPress={PickImage}>
           <View style={styles.imgcont}>
             <Image
-              source={{ uri: image }}
+               source={require("../assets/vicky.jpg")}
               style={{ width: "100%", height: "100%", borderRadius: 80 }}
             ></Image>
+            <View style={styles.status}></View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        <View style={styles.pontos}>
+      <Feather name="more-horizontal" size={30} color="grey" />
+      </View>
+      <Text style={styles.name}>
+        Victória Caroline
+      </Text>
+      <View style={styles.information}>
+        <Text style={styles.title}>Sobre</Text>
+        <Text style={styles.subtext}>Victória Caroline, 17 years old, studying systems development integrated to high school at Etec Professor Horácio Augusto da Silveira, extensive knowledge in the area of ​​PL/SQL database and others.</Text>
+      </View>
+      <View style={styles.information}>
+        <Text style={styles.title}>Interesses                             <Text style={styles.seeAll}>Ver todos ➜</Text> </Text>
+        <Text style={styles.subtext}>•Ambientalism{"\n"}•Environmentalism{"\n"}•Marine Life{"\n"}•Amazônia{"\n"}•Turtles</Text>
+      </View>
+        {/* <TouchableOpacity
           style={{
             width: 30,
             height: 30,
@@ -131,7 +150,7 @@ export default function ProfileScreen() {
           onPress={UploadPhotoStorage}
         >
           <Feather name="check" size={26} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -145,11 +164,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  wallpaper:{
+    width:screenWidth,
+    height:250,
+    marginTop:200,
+  },
   backCont: {
+    alignItems: "center",
     width: screenWidth,
     height: screenHeight,
     backgroundColor: "white",
-    marginTop: 450,
+    marginTop: -20,
     borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: {
@@ -158,7 +183,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.55,
     shadowRadius: 14.78,
-
     elevation: 22,
   },
   imgcont: {
@@ -167,8 +191,43 @@ const styles = StyleSheet.create({
     backgroundColor: "#2d2d2d",
     borderRadius: 80,
     marginTop: -80,
-    marginLeft: 135,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "white",
   },
+  status: {
+    width:35,
+    height:35,
+    backgroundColor:"#5ac1ae",
+    borderRadius:30,
+    borderWidth: 1,
+    borderColor: "white",
+    marginLeft:100,
+    marginTop:-30,
+  },
+  pontos: {
+    marginTop:10,
+  },
+  name: {
+    fontSize:25,
+  },
+  information: {
+    width:screenWidth,
+    height:90,
+    margin:20,
+  },
+  title: {
+    fontSize:32,
+    marginLeft:20,
+    color:"#5ac1ae",
+  },
+  subtext: {
+    fontSize:17,
+    marginLeft:20,
+    marginTop:5,
+    color:"#2d2d2d",
+  },
+  seeAll: {
+    fontSize:17,
+    color:"#2d2d2d",
+  }
 });
