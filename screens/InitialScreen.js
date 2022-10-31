@@ -77,14 +77,14 @@ const styles = StyleSheet.create({
     height: 52,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 410,
+    marginTop: 300,
   },
   img: {
     width: 350,
     height: 100,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 150,
+    marginTop: 10,
     marginLeft: 10,
   },
 });

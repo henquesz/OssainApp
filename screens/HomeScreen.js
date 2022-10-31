@@ -90,6 +90,7 @@ const HomeScreen = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
         savePostData(snapshot);
         console.log(snapshot);
+       setText("");
       });
     };
     const taskError = (snapshot) => {
@@ -116,6 +117,7 @@ const HomeScreen = () => {
   //function para limpar imagem do placeholder de novo post
   const clearImage = () => {
     setImage("-");
+    console.log("imagem limpa")
   };
 
   //use state para  fetch de post
@@ -198,7 +200,7 @@ const HomeScreen = () => {
       <View style={styles.containerPhoto}>
         <View>
           <Image
-            source={require("../assets/perfil.jpg")}
+            source={require("../assets/vicky.jpg")}
             style={styles.avatar}
           ></Image>
           <TextInput
