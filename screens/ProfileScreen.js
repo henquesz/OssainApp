@@ -11,6 +11,10 @@ import {
 } from "react-native";
 import React from "react";
 
+import { auth } from "../firebase";
+
+import { useNavigation } from "@react-navigation/native";
+
 //import icons
 import { Feather } from "@expo/vector-icons";
 
@@ -35,6 +39,8 @@ require("firebase/compat/storage");
 import { useTheme } from "../utils/ThemeProvider";
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
+
   const { dark, colors, setScheme } = useTheme();
 
   const toggleTheme = () => {
@@ -43,6 +49,15 @@ export default function ProfileScreen() {
 
   const [image, setImage] = useState("-");
   const [avatar, setAvatar] = useState("-");
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigation.replace("InitialScreen");
+      })
+      .catch((error) => alert(error.message));
+  };
 
   GetPhotoPermission = async () => {
     if (Constants.platform.android) {
@@ -170,7 +185,12 @@ export default function ProfileScreen() {
         >
           <Feather name="check" size={26} color="white" />
         </TouchableOpacity> */}
-      <Text style={{ color:colors.text, marginTop:70, }}>Teste nossa funcionalidade experimental de Dark Mode </Text>
+        <TouchableOpacity onPress={handleSignOut}>
+          <View style={{width:70, height:40, backgroundColor:"#ff605c", borderRadius:5, alignItems:"center", justifyContent: "center", marginTop:70,}}>
+            <Text style={{color:colors.primary,}}>Logout</Text>
+          </View>
+        </TouchableOpacity>
+      <Text style={{ color:colors.text, marginTop:20, }}>Teste nossa funcionalidade experimental de Dark Mode </Text>
       <Switch value={dark} onValueChange={toggleTheme}></Switch>
       </View>
     </View>

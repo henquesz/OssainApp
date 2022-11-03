@@ -22,6 +22,8 @@ import { ThemeProvider } from './utils/ThemeProvider';
 
 import { useTheme } from './utils/ThemeProvider';
 
+import { createDrawerNavigator } from 'react-navigation-drawer';
+
 
 //Import para funcionamento da navegação inferior
 const Tab = createBottomTabNavigator();
