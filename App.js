@@ -18,18 +18,26 @@ import ProfileScreen from './screens/ProfileScreen';
 
 import {Feather, EvilIcons} from '@expo/vector-icons'
 
+import { ThemeProvider } from './utils/ThemeProvider';
+
+import { useTheme } from './utils/ThemeProvider';
+
 
 //Import para funcionamento da navegação inferior
 const Tab = createBottomTabNavigator();
 
+
 //Function para rotas da navegação
 function Home() {
+  const {dark, colors, setScheme} = useTheme();
   return (
+    <ThemeProvider>
       <Tab.Navigator>
          <Tab.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false, tabBarHideOnKeyboard:false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="home" size={25} color="black"/>}}} />
           <Tab.Screen name="ApiScreen" component={ApiScreen}  options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="feather" size={25} color="black"/>}}} />
           <Tab.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false, tabBarShowLabel:false, tabBarIcon: () => { return <Feather name="user" size={25} color="black"/>}}} />
       </Tab.Navigator>
+    </ThemeProvider>
   );
 }
 
@@ -39,6 +47,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer >
+      <ThemeProvider>
       <Stack.Navigator>
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="InitialScreen" component={InitialScreen} />
         <Stack.Screen options={{headerShown: false, MyTabs: false}} name="LoginScreen" component={LoginScreen} />
@@ -47,6 +56,7 @@ export default function App() {
         <Stack.Screen options={{headerShown: false, MyTabs: false, tabBarHideOnKeyboard:false}} name="ReportTwo" component={ReportTwo} />
         <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
       </Stack.Navigator>
+      </ThemeProvider>
     </NavigationContainer>
   );
 }

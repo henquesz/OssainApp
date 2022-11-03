@@ -31,8 +31,13 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
+import { useTheme } from '../utils/ThemeProvider';
+import { color } from "react-native-reanimated";
+
 //Modulo de exportação principal de renderização e funcionamento da tela home.
 const HomeScreen = () => {
+  const {dark, colors, setScheme} = useTheme();
+
   //Navvigations
   const navigation = useNavigation();
 
@@ -186,7 +191,7 @@ const HomeScreen = () => {
 
   //front-end
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor:colors.primary,}]}>
       <View style={styles.head}>
         {/* <Image
           source={require("../assets/vicky.jpg")}
@@ -197,14 +202,14 @@ const HomeScreen = () => {
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity> */}
       </View>
-      <View style={styles.containerPhoto}>
+      <View style={[styles.containerPhoto, {backgroundColor:colors.text,}]}>
         <View>
           <Image
             source={require("../assets/vicky.jpg")}
             style={styles.avatar}
           ></Image>
           <TextInput
-            placeholderTextColor="#cfcfcf"
+            placeholderTextColor={colors.primary}
             autoFocus={true}
             multiline={true}
             numberOfLines={4}
@@ -212,13 +217,13 @@ const HomeScreen = () => {
               marginTop: -50,
               marginLeft: 70,
               maxWidth: 250,
-              color: "#fff",
+              color: colors.text,
             }}
             placeholder="O que você está pensando atualmente?"
             onChangeText={(text) => setText(text)}
           ></TextInput>
           <TouchableOpacity style={styles.photo} onPress={PickImage}>
-            <Feather name="camera" size={20} color="white" />
+            <Feather name="camera" size={20} color={colors.primary} />
           </TouchableOpacity>
         </View>
         
@@ -227,16 +232,16 @@ const HomeScreen = () => {
           style={styles.buttonUpload}
           onPress={UploadPhotoStorage}
         >
-          <Text style={styles.buttonText}>Post</Text>
+          <Text style={[styles.buttonText, {color:colors.primary,}]}>Post</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={clearImage}>
-          <Text style={styles.clearText}>
-            <Feather name="delete" size={15} color="white" /> Clear Image
+          <Text style={[styles.clearText, {color:colors.primary,}]}>
+            <Feather name="delete" size={15} color={colors.primary} /> Clear Image
           </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.pontos}>
-      <Feather name="more-horizontal" size={20} color="black" />
+      <Feather name="more-horizontal" size={20} color={colors.text} />
       </View>
       {/* //view / flat list para criação de posts no front-end */}
       <View style={{ flex: 1, marginTop: 20 }}>
@@ -245,9 +250,9 @@ const HomeScreen = () => {
           horizontal={false}
           data={posts}
           renderItem={({ item }) => (
-            <Pressable style={styles.cont}>
+            <Pressable style={[styles.cont, {backgroundColor:colors.text,}]}>
               <View style={styles.innercont}>
-                <Text style={styles.itemtext}>{item.text}</Text>
+                <Text style={[styles.itemtext, {color:colors.primary,}]}>{item.text}</Text>
                 <Image
                   style={styles.img}
                   source={{ uri: item.DownloadURL }}
@@ -355,7 +360,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemtext: {
-    fontWeight: "300",
+    fontWeight: "400",
     color: "white",
     marginLeft:5,
     marginBottom:10,

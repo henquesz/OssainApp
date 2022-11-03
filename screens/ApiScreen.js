@@ -11,7 +11,11 @@ import * as Location from 'expo-location';
 
 import getCurrentWeather from '../api/ConsultApi';
 
+import { useTheme } from '../utils/ThemeProvider';
+import { color } from 'react-native-reanimated';
+
 export default function ApiScreen() {
+  const {dark, colors, setScheme} = useTheme();
 
   const navigation = useNavigation()
 
@@ -63,43 +67,48 @@ export default function ApiScreen() {
 }
 
   return (
-    <View style={styles.container}>
+    <View style={{    
+      flex: 1,
+      backgroundColor:colors.primary,
+      justifyContent: "center",
+      alignItems: "center",}}>
       <TouchableOpacity onPress={pageRedirect}>
-       <Feather name="alert-octagon" size={30} color="black" style={{marginTop:20,}} />
+       <Feather name="alert-octagon" size={30} color={colors.text} style={{marginTop:20,}} />
       </TouchableOpacity>
-      <View style={styles.card1}>
+      <View style={[styles.card1, {backgroundColor:colors.text,}]}>
       <Feather name="sun" size={30} color="yellow" />
-        <Text style={styles.cardText}>{currentTemperature}<Text style={styles.cardText}>°C</Text></Text>
-        <Text style={styles.cardSubText}>{location}</Text>
+        <Text style={[styles.cardText, {color:colors.primary,}]}>{currentTemperature}<Text style={[styles.cardText, {color: colors.primary}]}>°C</Text></Text>
+        <Text style={[styles.cardSubText, {color:colors.primary,}]}>{location}</Text>
       </View>
-      <View style={styles.card2}>
-        <Text style={styles.cardText2}>Temperatura Mínima</Text>
+      <View style={[styles.card2, {backgroundColor:colors.text,}]}>
+        <Text style={[styles.cardText2, {color:colors.primary,}]}>Temperatura Mínima</Text>
         <Feather name="arrow-down" size={50} color="red" style={{marginTop:20, marginBottom:15,}} />
-        <Text style={styles.cardText2}>{tempMin}°C</Text>
+        <Text style={[styles.cardText2, {color:colors.primary,}]}>{tempMin}°C</Text>
       </View>
-      <View style={styles.card3}>
-      <Text style={styles.cardText2}>Temperatura Máxima</Text>
+      <View style={[styles.card3, {backgroundColor:colors.text,}]}>
+      <Text style={[styles.cardText2, {color:colors.primary,}]}>Temperatura Máxima</Text>
         <Feather name="arrow-up" size={50} color="green" style={{marginTop:20, marginBottom:15,}} />
-        <Text style={styles.cardText2}>{tempMax}°C</Text>
+        <Text style={[styles.cardText2, {color:colors.primary,}]}>{tempMax}°C</Text>
       </View>
-      <View style={styles.card4}>
-      <Text style={styles.cardText}>{pressure}</Text>
-        <Text style={styles.cardSubText}>Pressure</Text>
+      <View style={[styles.card4, {backgroundColor:colors.text,}]}>
+        
+      <Text style={[styles.cardText, {color:colors.primary,}]}>{pressure}</Text>
+        <Text style={[styles.cardSubText, {color:colors.primary,}]}>Pressure</Text>
       </View>
-      <View style={styles.card5}>
+      <View style={[styles.card5, {backgroundColor:colors.text,}]}>
           <View style={styles.subCard1}>
-            <Text style={styles.cardMenorSubText}>Ventos</Text>
-            <Text style={styles.cardSubText}>{wind} KM/H</Text>
-            <Text style={styles.cardSubText}>{windDeg} Deg</Text>
+            <Text style={[styles.cardMenorSubText, {color:colors.primary,}]}>Ventos</Text>
+            <Text style={[styles.cardSubText, {color:colors.primary,}]}>{wind} KM/H</Text>
+            <Text style={[styles.cardSubText, {color:colors.primary,}]}>{windDeg} Deg</Text>
           </View>
 
           <View style={styles.subCard2}>
-            <Text style={styles.cardMenorSubText}>Umidade</Text>
-            <Text style={styles.cardSubText}>{umidity}</Text>
+            <Text style={[styles.cardMenorSubText, {color:colors.primary,}]}>Umidade</Text>
+            <Text style={[styles.cardSubText, {color:colors.primary,}]}>{umidity}</Text>
           </View>
       </View>
       <TouchableOpacity onPress={() => setCurrentWeather()} style={{marginTop:15,}}>
-        <Feather name="arrow-down-circle" size={30} color="#2d2d2d" />
+        <Feather name="arrow-down-circle" size={30} color={colors.text} />
       </TouchableOpacity>
     </View>
   )
