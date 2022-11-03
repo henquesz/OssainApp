@@ -107,7 +107,7 @@ const LoginScreen = () => {
         <TouchableOpacity style={styles.button} onPress={handleSign}>
           <Text style={{ color: "white" }}>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttongoogle} onPress={testeHome}>
+        <TouchableOpacity style={styles.buttongoogle} >
         <Image source={require('../assets/logoGoogle.webp')} style={styles.imgGoogle}></Image>
         </TouchableOpacity>
 

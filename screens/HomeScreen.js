@@ -95,7 +95,6 @@ const HomeScreen = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
         savePostData(snapshot);
         console.log(snapshot);
-       setText("");
       });
     };
     const taskError = (snapshot) => {
@@ -217,7 +216,7 @@ const HomeScreen = () => {
               marginTop: -50,
               marginLeft: 70,
               maxWidth: 250,
-              color: colors.text,
+              color: colors.primary,
             }}
             placeholder="O que você está pensando atualmente?"
             onChangeText={(text) => setText(text)}
