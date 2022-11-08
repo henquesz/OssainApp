@@ -37,6 +37,7 @@ import { doc, onSnapshot, QuerySnapshot } from "@firebase/firestore";
 require("firebase/compat/storage");
 
 import { useTheme } from "../utils/ThemeProvider";
+import { TextInput } from "react-native-gesture-handler";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -159,10 +160,12 @@ export default function ProfileScreen() {
         <View style={styles.information}>
           <Text style={styles.title}>Sobre</Text>
           <Text style={[styles.subtext, { color: colors.text }]}>
+            <TextInput>
             Victória Caroline, 17 years old, studying systems development
             integrated to high school at Etec Professor Horácio Augusto da
             Silveira, extensive knowledge in the area of ​​PL/SQL database and
             others.
+            </TextInput>
           </Text>
         </View>
         <View style={styles.information}>

@@ -10,6 +10,7 @@ import {
   TextInput,
   FlatList,
   Pressable,
+  Button,
 } from "react-native";
 import React from "react";
 //import of auth
@@ -38,7 +39,7 @@ import { color } from "react-native-reanimated";
 const HomeScreen = () => {
   const {dark, colors, setScheme} = useTheme();
 
-  //Navvigations
+  //Navigations
   const navigation = useNavigation();
 
   //Lógica para função de deslogar - firebase
@@ -54,6 +55,10 @@ const HomeScreen = () => {
   //use states para efetuar novo post
   const [text, setText] = useState("-");
   const [image, setImage] = useState("-");
+
+
+  // const [iconPerfil, setAvatar] = useState("-");
+  // const [nameUser, setTextName] = useState("-");
 
   //solicitação de permissão para acessar galeria
   GetPhotoPermission = async () => {
@@ -103,14 +108,19 @@ const HomeScreen = () => {
     task.on("state_changed", taskProgess, taskError, taskCompleted);
   };
 
+
   // function para criar novo post no banco e armazenar url da imagem
   const savePostData = (DownloadURL) => {
+      postNameUser = 
+
     firebase
       .firestore()
       .collection("userPost")
       .add({
         DownloadURL,
         text,
+        name,
+
         creation: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(function () {
@@ -136,8 +146,15 @@ const HomeScreen = () => {
 
   //caminho de collections para acesso de fetch para nome
   const fnome = firebase
-  .firestore()
-  .collection("users")
+    .firestore()
+    .collection("users")
+    .get()
+    .then((snapshot) => {
+      let nomes = snapshot.docs.map((nome) => {
+        const data = nome.name();
+        return console.log(data)
+      })
+    })
 
   //function de fetch-test para visualizar o retorno de postagens no banco / query
   const fetchData = () => {
@@ -226,7 +243,6 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
         
-
         <TouchableOpacity
           style={styles.buttonUpload}
           onPress={UploadPhotoStorage}
@@ -251,6 +267,11 @@ const HomeScreen = () => {
           renderItem={({ item }) => (
             <Pressable style={[styles.cont, {backgroundColor:colors.text,}]}>
               <View style={styles.innercont}>
+              <Image
+                source={require("../assets/vicky.jpg")}
+                style={styles.postAvatar}
+               ></Image>
+              <Text style={[styles.nameUser, {color:colors.primary,}]}>Victória Caroline</Text>
                 <Text style={[styles.itemtext, {color:colors.primary,}]}>{item.text}</Text>
                 <Image
                   style={styles.img}
@@ -373,5 +394,18 @@ const styles = StyleSheet.create({
   pontos: {
     marginLeft:200,
     marginTop:10,
+  },
+  nameUser: {
+    marginTop:-35,
+    marginLeft:55,
+    marginBottom:20,
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  postAvatar: {
+    marginLeft: 5,
+    width: 40,
+    height: 40,
+    borderRadius: 80,
   },
 });
